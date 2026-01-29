@@ -38,6 +38,7 @@
         h1 {
             color: #2c3e50;
             margin-bottom: 10px;
+            font-size: 28px;
         }
         
         .description {
@@ -55,6 +56,69 @@
             gap: 15px;
         }
         
+        .search-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            padding-left: 40px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: white;
+            min-width: 180px;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
         button {
             background-color: #3498db;
             color: white;
@@ -65,12 +129,37 @@
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         
         button:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: #2c3e50;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1a252f;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .reset-btn {
+            background-color: #95a5a6;
+        }
+        
+        .reset-btn:hover {
+            background-color: #7f8c8d;
         }
         
         .loading {
@@ -89,10 +178,17 @@
             border-left: 4px solid #c0392b;
         }
         
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px solid #eaeaea;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            min-width: 800px;
         }
         
         th {
@@ -101,6 +197,8 @@
             padding: 15px;
             text-align: left;
             font-weight: 600;
+            position: sticky;
+            top: 0;
         }
         
         td {
@@ -147,7 +245,7 @@
         .summary-item {
             text-align: center;
             flex: 1;
-            min-width: 200px;
+            min-width: 150px;
         }
         
         .summary-value {
@@ -169,6 +267,13 @@
             font-style: italic;
         }
         
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
         footer {
             text-align: center;
             margin-top: 30px;
@@ -176,6 +281,16 @@
             font-size: 14px;
             padding-top: 20px;
             border-top: 1px solid #eaeaea;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #3498db;
+            cursor: pointer;
+            padding: 10px;
         }
         
         @media print {
@@ -193,13 +308,13 @@
                 display: none !important;
             }
             
-            table {
-                page-break-inside: auto;
+            .table-container {
+                overflow: visible;
+                border: none;
             }
             
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
+            table {
+                min-width: auto;
             }
             
             th {
@@ -215,13 +330,38 @@
                 padding: 15px;
             }
             
+            h1 {
+                font-size: 24px;
+            }
+            
             .controls {
                 flex-direction: column;
                 align-items: stretch;
             }
             
-            button {
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-box, .filter-select {
+                min-width: 100%;
+            }
+            
+            .filter-group {
+                flex-direction: column;
                 width: 100%;
+            }
+            
+            .btn-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            button {
+                flex: 1;
+                min-width: auto;
+                padding: 10px 15px;
+                font-size: 14px;
             }
             
             table {
@@ -229,7 +369,78 @@
             }
             
             th, td {
+                padding: 8px 10px;
+            }
+            
+            .summary-item {
+                min-width: 100px;
+            }
+            
+            .summary-value {
+                font-size: 20px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #3498db;
+                color: white;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                z-index: 100;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            
+            .mobile-controls {
+                display: none;
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                background: white;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 100;
+                width: calc(100% - 40px);
+                max-width: 400px;
+            }
+            
+            .mobile-controls.active {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
                 padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .description {
+                font-size: 14px;
+            }
+            
+            .summary {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .summary-item {
+                min-width: 80px;
+            }
+            
+            .summary-value {
+                font-size: 18px;
             }
         }
     </style>
@@ -238,36 +449,93 @@
     <div class="container">
         <header>
             <h1>Data Setoran</h1>
-            <p class="description">Data setoran otomatis diambil dari Google Sheets. Sistem akan menyesuaikan otomatis jika ada tambahan kolom setoran baru.</p>
+            <p class="description">Data setoran otomatis diambil dari Google Sheets. Cari data berdasarkan nama atau kategori setoran.</p>
         </header>
         
-        <div class="controls">
-            <div>
-                <button id="loadData">Muat Ulang Data</button>
-                <button id="printBtn" onclick="window.print()">Cetak Laporan</button>
+        <div class="controls" id="desktopControls">
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Cari berdasarkan nama...">
+                </div>
+                
+                <div class="filter-group">
+                    <select id="filterSetoran" class="filter-select">
+                        <option value="">Semua Setoran</option>
+                        <!-- Options akan diisi oleh JavaScript -->
+                    </select>
+                    
+                    <select id="filterStatus" class="filter-select">
+                        <option value="">Semua Status</option>
+                        <option value="lengkap">Setoran Lengkap</option>
+                        <option value="kurang">Setoran Kurang</option>
+                        <option value="kosong">Belum Setor</option>
+                    </select>
+                </div>
             </div>
-            <div id="lastUpdate"></div>
+            
+            <div class="btn-group">
+                <button id="searchBtn">Cari</button>
+                <button id="resetBtn" class="reset-btn">Reset</button>
+                <button id="loadData">Muat Ulang</button>
+                <button id="printBtn" class="btn-secondary">Cetak</button>
+            </div>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="mobile-controls" id="mobileControls">
+            <div class="search-box" style="margin-bottom: 10px;">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInputMobile" placeholder="Cari berdasarkan nama...">
+            </div>
+            
+            <select id="filterSetoranMobile" class="filter-select" style="margin-bottom: 10px; width: 100%;">
+                <option value="">Semua Setoran</option>
+            </select>
+            
+            <select id="filterStatusMobile" class="filter-select" style="margin-bottom: 15px; width: 100%;">
+                <option value="">Semua Status</option>
+                <option value="lengkap">Setoran Lengkap</option>
+                <option value="kurang">Setoran Kurang</option>
+                <option value="kosong">Belum Setor</option>
+            </select>
+            
+            <div class="btn-group" style="width: 100%;">
+                <button id="searchBtnMobile" style="flex: 1;">Cari</button>
+                <button id="resetBtnMobile" class="reset-btn" style="flex: 1;">Reset</button>
+                <button id="loadDataMobile" style="flex: 1;">Muat Ulang</button>
+                <button id="printBtnMobile" class="btn-secondary" style="flex: 1;">Cetak</button>
+            </div>
         </div>
         
         <div id="loading" class="loading">Memuat data dari Google Sheets...</div>
         <div id="errorContainer" style="display: none;"></div>
         
         <div id="tableContainer" style="display: none;">
-            <table id="dataTable">
-                <thead>
-                    <tr id="tableHeader">
-                        <!-- Header akan diisi oleh JavaScript -->
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Data akan diisi oleh JavaScript -->
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr id="tableHeader">
+                            <!-- Header akan diisi oleh JavaScript -->
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="noResults" class="no-results" style="display: none;">
+                Tidak ditemukan data yang sesuai dengan pencarian.
+            </div>
             
             <div class="summary" id="summaryContainer">
                 <!-- Summary akan diisi oleh JavaScript -->
             </div>
         </div>
+        
+        <div id="resultInfo" style="margin-top: 15px; color: #7f8c8d; font-size: 14px;"></div>
         
         <footer>
             <p>Data diambil dari: https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv</p>
@@ -279,6 +547,11 @@
         // URL spreadsheet Google Sheets
         const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv";
         
+        // Variabel global untuk data
+        let allData = [];
+        let setoranColumns = [];
+        let currentFilteredData = [];
+        
         // Elemen DOM
         const loadingElement = document.getElementById('loading');
         const errorContainer = document.getElementById('errorContainer');
@@ -286,8 +559,26 @@
         const tableHeader = document.getElementById('tableHeader');
         const tableBody = document.getElementById('tableBody');
         const summaryContainer = document.getElementById('summaryContainer');
-        const loadDataButton = document.getElementById('loadData');
-        const lastUpdateElement = document.getElementById('lastUpdate');
+        const noResultsElement = document.getElementById('noResults');
+        const resultInfoElement = document.getElementById('resultInfo');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileControls = document.getElementById('mobileControls');
+        
+        // Search elements
+        const searchInput = document.getElementById('searchInput');
+        const searchInputMobile = document.getElementById('searchInputMobile');
+        const filterSetoran = document.getElementById('filterSetoran');
+        const filterSetoranMobile = document.getElementById('filterSetoranMobile');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterStatusMobile = document.getElementById('filterStatusMobile');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchBtnMobile = document.getElementById('searchBtnMobile');
+        const resetBtn = document.getElementById('resetBtn');
+        const resetBtnMobile = document.getElementById('resetBtnMobile');
+        const loadDataBtn = document.getElementById('loadData');
+        const loadDataBtnMobile = document.getElementById('loadDataMobile');
+        const printBtn = document.getElementById('printBtn');
+        const printBtnMobile = document.getElementById('printBtnMobile');
         
         // Fungsi untuk memformat angka dengan pemisah ribuan
         function formatNumber(number) {
@@ -303,16 +594,11 @@
             
             let strValue = value.toString().trim();
             
-            // Debug log
-            console.log('Original value:', strValue);
-            
             // Hapus "Rp" dan spasi
             strValue = strValue.replace(/^Rp\s*/i, '');
             
             // Hapus semua karakter non-angka kecuali koma dan titik
             strValue = strValue.replace(/[^\d,.]/g, '');
-            
-            console.log('After cleaning:', strValue);
             
             // Jika kosong setelah dibersihkan, return 0
             if (strValue === '') {
@@ -320,7 +606,6 @@
             }
             
             // Cek format Indonesia: 200,000 (koma sebagai pemisah ribuan)
-            // Jika hanya ada koma dan tidak ada titik, atau koma di posisi ke-4 dari belakang
             if (strValue.includes(',') && !strValue.includes('.')) {
                 // Hapus semua koma
                 strValue = strValue.replace(/,/g, '');
@@ -336,11 +621,7 @@
                 strValue = strValue.replace(',', '.');
             }
             
-            console.log('Before parseFloat:', strValue);
-            
             const number = parseFloat(strValue);
-            console.log('Parsed number:', number);
-            
             return isNaN(number) ? 0 : number;
         }
         
@@ -351,6 +632,8 @@
                 loadingElement.style.display = 'block';
                 errorContainer.style.display = 'none';
                 tableContainer.style.display = 'none';
+                noResultsElement.style.display = 'none';
+                resultInfoElement.textContent = '';
                 
                 // Fetch data dari URL dengan cache busting
                 const timestamp = new Date().getTime();
@@ -361,11 +644,9 @@
                 }
                 
                 const csvText = await response.text();
-                console.log("Raw CSV text (first 1000 chars):", csvText.substring(0, 1000));
                 
-                // Parse CSV dengan cara yang lebih sederhana
+                // Parse CSV
                 const rows = parseCSVSimple(csvText);
-                console.log("Parsed rows:", rows);
                 
                 if (rows.length < 2) {
                     throw new Error('Data CSV tidak valid atau kosong');
@@ -373,198 +654,77 @@
                 
                 // Header (baris pertama)
                 const headers = rows[0].map(h => h ? h.trim() : '');
-                console.log("Headers found:", headers);
                 
                 // Data (baris kedua hingga akhir)
-                const dataRows = rows.slice(1).filter(row => {
+                const rawDataRows = rows.slice(1).filter(row => {
                     const firstCell = row[0] ? row[0].trim() : '';
                     return firstCell !== '' && firstCell !== undefined && firstCell !== null;
                 });
                 
-                console.log("Data rows count:", dataRows.length);
-                console.log("Sample data row:", dataRows[0]);
-                
-                // Cari kolom-kolom setoran (dimulai dengan "setoran")
-                const setoranColumns = headers
+                // Cari kolom-kolom setoran
+                setoranColumns = headers
                     .map((header, index) => ({ 
                         header: header || `Kolom ${index + 1}`, 
                         index 
                     }))
                     .filter(col => col.header.toLowerCase().includes('setoran'));
                 
-                console.log("Setoran columns found:", setoranColumns);
-                
-                // Cari kolom nama (biasanya kolom pertama)
+                // Cari kolom nama
                 const namaColumnIndex = headers.findIndex(header => 
                     header && (header.toLowerCase().includes('nama') || header.toLowerCase().includes('name')));
                 
-                if (namaColumnIndex === -1) {
-                    console.warn('Kolom "NAMA" tidak ditemukan, menggunakan kolom pertama sebagai nama');
-                    // Jika tidak ada kolom nama, gunakan kolom pertama
-                    var namaIndex = 0;
-                } else {
-                    var namaIndex = namaColumnIndex;
-                }
+                const namaIndex = namaColumnIndex !== -1 ? namaColumnIndex : 0;
                 
-                // Buat header tabel
-                tableHeader.innerHTML = '';
-                
-                // Tambahkan kolom No
-                const noHeader = document.createElement('th');
-                noHeader.textContent = 'NO';
-                noHeader.style.width = '50px';
-                tableHeader.appendChild(noHeader);
-                
-                // Tambahkan kolom nama
-                const namaHeader = document.createElement('th');
-                namaHeader.textContent = 'NAMA';
-                tableHeader.appendChild(namaHeader);
-                
-                // Tambahkan kolom setoran
-                setoranColumns.forEach(col => {
-                    const th = document.createElement('th');
-                    th.textContent = col.header.toUpperCase();
-                    th.classList.add('amount-header');
-                    th.style.textAlign = 'right';
-                    tableHeader.appendChild(th);
-                });
-                
-                // Tambahkan kolom total
-                const totalHeader = document.createElement('th');
-                totalHeader.textContent = 'TOTAL';
-                totalHeader.classList.add('amount-header');
-                totalHeader.style.textAlign = 'right';
-                tableHeader.appendChild(totalHeader);
-                
-                // Bersihkan body tabel
-                tableBody.innerHTML = '';
-                
-                // Variabel untuk summary
-                let totalAllSetoran = 0;
-                let totalAllPeople = 0;
-                const columnTotals = new Array(setoranColumns.length).fill(0);
-                
-                // Proses setiap baris data
-                dataRows.forEach((row, rowIndex) => {
-                    const tr = document.createElement('tr');
+                // Simpan semua data
+                allData = rawDataRows.map((row, rowIndex) => {
+                    const dataItem = {
+                        id: rowIndex + 1,
+                        nama: row[namaIndex] ? row[namaIndex].trim() : `Baris ${rowIndex + 1}`,
+                        setoran: {},
+                        total: 0,
+                        status: 'kosong'
+                    };
                     
-                    // Kolom No
-                    const noCell = document.createElement('td');
-                    noCell.textContent = rowIndex + 1;
-                    tr.appendChild(noCell);
-                    
-                    // Kolom nama
-                    const namaCell = document.createElement('td');
-                    const namaValue = row[namaIndex] ? row[namaIndex].trim() : `Baris ${rowIndex + 1}`;
-                    namaCell.textContent = namaValue;
-                    tr.appendChild(namaCell);
-                    
-                    // Hitung total untuk orang ini
+                    // Hitung setoran per kolom dan total
                     let personTotal = 0;
+                    let filledColumns = 0;
                     
-                    // Kolom setoran
                     setoranColumns.forEach((col, colIndex) => {
-                        const td = document.createElement('td');
-                        td.classList.add('amount');
-                        td.style.textAlign = 'right';
-                        
                         const value = row[col.index] ? row[col.index].trim() : '';
+                        const numericValue = cleanMoneyValue(value);
                         
-                        if (value && value !== '' && value !== '-') {
-                            const numericValue = cleanMoneyValue(value);
-                            console.log(`Processing: "${value}" -> ${numericValue}`);
-                            
-                            td.textContent = formatNumber(numericValue);
-                            
-                            // Tambahkan ke total orang ini
-                            personTotal += numericValue;
-                            
-                            // Tambahkan ke total kolom
-                            columnTotals[colIndex] += numericValue;
-                        } else {
-                            td.textContent = '-';
-                            td.classList.add('empty-value');
-                        }
+                        dataItem.setoran[col.header] = {
+                            value: value,
+                            numericValue: numericValue
+                        };
                         
-                        tr.appendChild(td);
+                        personTotal += numericValue;
+                        if (numericValue > 0) filledColumns++;
                     });
                     
-                    // Kolom total per orang
-                    const totalCell = document.createElement('td');
-                    totalCell.classList.add('amount');
-                    totalCell.style.textAlign = 'right';
-                    totalCell.textContent = formatNumber(personTotal);
-                    if (personTotal === 0) {
-                        totalCell.classList.add('empty-value');
-                    }
-                    tr.appendChild(totalCell);
+                    dataItem.total = personTotal;
                     
-                    // Tambahkan ke body tabel
-                    tableBody.appendChild(tr);
-                    
-                    // Tambahkan ke total keseluruhan
-                    totalAllSetoran += personTotal;
-                    if (namaValue && namaValue.trim() !== '') {
-                        totalAllPeople++;
+                    // Tentukan status
+                    if (filledColumns === 0) {
+                        dataItem.status = 'kosong';
+                    } else if (filledColumns < setoranColumns.length) {
+                        dataItem.status = 'kurang';
+                    } else {
+                        dataItem.status = 'lengkap';
                     }
+                    
+                    return dataItem;
                 });
                 
-                // Tambahkan baris total jika ada data
-                if (dataRows.length > 0) {
-                    const totalRow = document.createElement('tr');
-                    totalRow.classList.add('total-row');
-                    
-                    // Sel untuk label "TOTAL"
-                    const totalLabelCell = document.createElement('td');
-                    totalLabelCell.colSpan = 2; // Span No dan Nama
-                    totalLabelCell.textContent = `TOTAL (${totalAllPeople} orang)`;
-                    totalLabelCell.style.fontWeight = 'bold';
-                    totalRow.appendChild(totalLabelCell);
-                    
-                    // Total untuk setiap kolom setoran
-                    columnTotals.forEach(total => {
-                        const td = document.createElement('td');
-                        td.classList.add('amount');
-                        td.style.textAlign = 'right';
-                        td.style.fontWeight = 'bold';
-                        td.textContent = formatNumber(total);
-                        totalRow.appendChild(td);
-                    });
-                    
-                    // Total keseluruhan
-                    const grandTotalCell = document.createElement('td');
-                    grandTotalCell.classList.add('amount');
-                    grandTotalCell.style.textAlign = 'right';
-                    grandTotalCell.style.fontWeight = 'bold';
-                    grandTotalCell.textContent = formatNumber(totalAllSetoran);
-                    totalRow.appendChild(grandTotalCell);
-                    
-                    tableBody.appendChild(totalRow);
-                }
+                // Update filter dropdown untuk setoran
+                updateSetoranFilter();
                 
-                // Update summary
-                summaryContainer.innerHTML = `
-                    <div class="summary-item">
-                        <div class="summary-label">Jumlah Orang</div>
-                        <div class="summary-value">${totalAllPeople}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Jumlah Setoran</div>
-                        <div class="summary-value">${setoranColumns.length}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Total Keseluruhan</div>
-                        <div class="summary-value">${formatNumber(totalAllSetoran)}</div>
-                    </div>
-                `;
+                // Tampilkan semua data pertama kali
+                currentFilteredData = [...allData];
+                displayData(currentFilteredData);
                 
-                // Update waktu terakhir data dimuat
-                const now = new Date();
-                lastUpdateElement.textContent = `Terakhir diperbarui: ${now.toLocaleDateString('id-ID')} ${now.toLocaleTimeString('id-ID')}`;
-                
-                // Sembunyikan loading, tampilkan tabel
-                loadingElement.style.display = 'none';
-                tableContainer.style.display = 'block';
+                // Update info hasil
+                updateResultInfo(currentFilteredData.length, allData.length);
                 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -582,7 +742,271 @@
             }
         }
         
-        // Fungsi parse CSV yang lebih sederhana
+        // Fungsi untuk update filter dropdown setoran
+        function updateSetoranFilter() {
+            // Kosongkan dropdown terlebih dahulu
+            filterSetoran.innerHTML = '<option value="">Semua Setoran</option>';
+            filterSetoranMobile.innerHTML = '<option value="">Semua Setoran</option>';
+            
+            // Tambahkan opsi untuk setiap setoran
+            setoranColumns.forEach(col => {
+                const option = document.createElement('option');
+                option.value = col.header;
+                option.textContent = col.header.toUpperCase();
+                filterSetoran.appendChild(option.cloneNode(true));
+                filterSetoranMobile.appendChild(option);
+            });
+        }
+        
+        // Fungsi untuk menampilkan data
+        function displayData(data) {
+            // Sembunyikan loading, tampilkan tabel
+            loadingElement.style.display = 'none';
+            
+            if (data.length === 0) {
+                tableContainer.style.display = 'none';
+                noResultsElement.style.display = 'block';
+                summaryContainer.innerHTML = '';
+                return;
+            }
+            
+            tableContainer.style.display = 'block';
+            noResultsElement.style.display = 'none';
+            
+            // Buat header tabel
+            tableHeader.innerHTML = '';
+            
+            // Tambahkan kolom No
+            const noHeader = document.createElement('th');
+            noHeader.textContent = 'NO';
+            noHeader.style.width = '50px';
+            tableHeader.appendChild(noHeader);
+            
+            // Tambahkan kolom nama
+            const namaHeader = document.createElement('th');
+            namaHeader.textContent = 'NAMA';
+            tableHeader.appendChild(namaHeader);
+            
+            // Tambahkan kolom setoran
+            setoranColumns.forEach(col => {
+                const th = document.createElement('th');
+                th.textContent = col.header.toUpperCase();
+                th.classList.add('amount-header');
+                th.style.textAlign = 'right';
+                tableHeader.appendChild(th);
+            });
+            
+            // Tambahkan kolom total
+            const totalHeader = document.createElement('th');
+            totalHeader.textContent = 'TOTAL';
+            totalHeader.classList.add('amount-header');
+            totalHeader.style.textAlign = 'right';
+            tableHeader.appendChild(totalHeader);
+            
+            // Tambahkan kolom status
+            const statusHeader = document.createElement('th');
+            statusHeader.textContent = 'STATUS';
+            statusHeader.style.width = '100px';
+            tableHeader.appendChild(statusHeader);
+            
+            // Bersihkan body tabel
+            tableBody.innerHTML = '';
+            
+            // Variabel untuk summary
+            let totalAllSetoran = 0;
+            let totalAllPeople = data.length;
+            const columnTotals = new Array(setoranColumns.length).fill(0);
+            
+            // Proses setiap baris data
+            data.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                
+                // Kolom No
+                const noCell = document.createElement('td');
+                noCell.textContent = index + 1;
+                tr.appendChild(noCell);
+                
+                // Kolom nama
+                const namaCell = document.createElement('td');
+                namaCell.textContent = item.nama;
+                tr.appendChild(namaCell);
+                
+                // Kolom setoran
+                setoranColumns.forEach((col, colIndex) => {
+                    const td = document.createElement('td');
+                    td.classList.add('amount');
+                    td.style.textAlign = 'right';
+                    
+                    const setoranData = item.setoran[col.header];
+                    const value = setoranData ? setoranData.numericValue : 0;
+                    
+                    if (value > 0) {
+                        td.textContent = formatNumber(value);
+                        
+                        // Tambahkan ke total kolom
+                        columnTotals[colIndex] += value;
+                    } else {
+                        td.textContent = '-';
+                        td.classList.add('empty-value');
+                    }
+                    
+                    tr.appendChild(td);
+                });
+                
+                // Kolom total per orang
+                const totalCell = document.createElement('td');
+                totalCell.classList.add('amount');
+                totalCell.style.textAlign = 'right';
+                totalCell.textContent = formatNumber(item.total);
+                if (item.total === 0) {
+                    totalCell.classList.add('empty-value');
+                }
+                tr.appendChild(totalCell);
+                
+                // Kolom status
+                const statusCell = document.createElement('td');
+                let statusText = '';
+                let statusClass = '';
+                
+                switch(item.status) {
+                    case 'lengkap':
+                        statusText = 'Lengkap';
+                        statusClass = 'status-lengkap';
+                        break;
+                    case 'kurang':
+                        statusText = 'Kurang';
+                        statusClass = 'status-kurang';
+                        break;
+                    case 'kosong':
+                        statusText = 'Belum';
+                        statusClass = 'status-kosong';
+                        break;
+                }
+                
+                statusCell.textContent = statusText;
+                statusCell.style.fontWeight = 'bold';
+                
+                // Warna status
+                if (item.status === 'lengkap') {
+                    statusCell.style.color = '#27ae60';
+                } else if (item.status === 'kurang') {
+                    statusCell.style.color = '#f39c12';
+                } else {
+                    statusCell.style.color = '#e74c3c';
+                }
+                
+                tr.appendChild(statusCell);
+                
+                // Tambahkan ke body tabel
+                tableBody.appendChild(tr);
+                
+                // Tambahkan ke total keseluruhan
+                totalAllSetoran += item.total;
+            });
+            
+            // Tambahkan baris total
+            const totalRow = document.createElement('tr');
+            totalRow.classList.add('total-row');
+            
+            // Sel untuk label "TOTAL"
+            const totalLabelCell = document.createElement('td');
+            totalLabelCell.colSpan = 2; // Span No dan Nama
+            totalLabelCell.textContent = `TOTAL (${totalAllPeople} orang)`;
+            totalLabelCell.style.fontWeight = 'bold';
+            totalRow.appendChild(totalLabelCell);
+            
+            // Total untuk setiap kolom setoran
+            columnTotals.forEach(total => {
+                const td = document.createElement('td');
+                td.classList.add('amount');
+                td.style.textAlign = 'right';
+                td.style.fontWeight = 'bold';
+                td.textContent = formatNumber(total);
+                totalRow.appendChild(td);
+            });
+            
+            // Total keseluruhan
+            const grandTotalCell = document.createElement('td');
+            grandTotalCell.classList.add('amount');
+            grandTotalCell.style.textAlign = 'right';
+            grandTotalCell.style.fontWeight = 'bold';
+            grandTotalCell.textContent = formatNumber(totalAllSetoran);
+            totalRow.appendChild(grandTotalCell);
+            
+            // Kosongkan untuk status
+            const emptyStatusCell = document.createElement('td');
+            totalRow.appendChild(emptyStatusCell);
+            
+            tableBody.appendChild(totalRow);
+            
+            // Update summary
+            summaryContainer.innerHTML = `
+                <div class="summary-item">
+                    <div class="summary-label">Jumlah Orang</div>
+                    <div class="summary-value">${totalAllPeople}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Jumlah Setoran</div>
+                    <div class="summary-value">${setoranColumns.length}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total Keseluruhan</div>
+                    <div class="summary-value">${formatNumber(totalAllSetoran)}</div>
+                </div>
+            `;
+        }
+        
+        // Fungsi untuk mencari data
+        function searchData() {
+            const searchTerm = searchInput.value.toLowerCase() || searchInputMobile.value.toLowerCase();
+            const selectedSetoran = filterSetoran.value || filterSetoranMobile.value;
+            const selectedStatus = filterStatus.value || filterStatusMobile.value;
+            
+            currentFilteredData = allData.filter(item => {
+                // Filter berdasarkan pencarian nama
+                const namaMatch = !searchTerm || item.nama.toLowerCase().includes(searchTerm);
+                
+                // Filter berdasarkan setoran
+                let setoranMatch = true;
+                if (selectedSetoran) {
+                    const setoranData = item.setoran[selectedSetoran];
+                    setoranMatch = setoranData && setoranData.numericValue > 0;
+                }
+                
+                // Filter berdasarkan status
+                const statusMatch = !selectedStatus || item.status === selectedStatus;
+                
+                return namaMatch && setoranMatch && statusMatch;
+            });
+            
+            displayData(currentFilteredData);
+            updateResultInfo(currentFilteredData.length, allData.length);
+        }
+        
+        // Fungsi untuk reset pencarian
+        function resetSearch() {
+            searchInput.value = '';
+            searchInputMobile.value = '';
+            filterSetoran.value = '';
+            filterSetoranMobile.value = '';
+            filterStatus.value = '';
+            filterStatusMobile.value = '';
+            
+            currentFilteredData = [...allData];
+            displayData(currentFilteredData);
+            updateResultInfo(currentFilteredData.length, allData.length);
+        }
+        
+        // Fungsi untuk update info hasil pencarian
+        function updateResultInfo(filteredCount, totalCount) {
+            if (filteredCount === totalCount) {
+                resultInfoElement.textContent = `Menampilkan semua ${totalCount} data`;
+            } else {
+                resultInfoElement.textContent = `Menampilkan ${filteredCount} dari ${totalCount} data`;
+            }
+        }
+        
+        // Fungsi parse CSV sederhana
         function parseCSVSimple(text) {
             const rows = [];
             const lines = text.split('\n');
@@ -590,7 +1014,6 @@
             for (let line of lines) {
                 if (line.trim() === '') continue;
                 
-                // Split by comma, but handle quoted values
                 const row = [];
                 let current = '';
                 let inQuotes = false;
@@ -600,7 +1023,6 @@
                     
                     if (char === '"') {
                         if (inQuotes && line[i + 1] === '"') {
-                            // Escaped quote
                             current += '"';
                             i++;
                         } else {
@@ -614,7 +1036,6 @@
                     }
                 }
                 
-                // Add the last cell
                 row.push(current);
                 rows.push(row);
             }
@@ -622,8 +1043,39 @@
             return rows;
         }
         
-        // Event listener untuk tombol muat ulang
-        loadDataButton.addEventListener('click', loadData);
+        // Event Listeners
+        searchBtn.addEventListener('click', searchData);
+        searchBtnMobile.addEventListener('click', searchData);
+        
+        resetBtn.addEventListener('click', resetSearch);
+        resetBtnMobile.addEventListener('click', resetSearch);
+        
+        loadDataBtn.addEventListener('click', loadData);
+        loadDataBtnMobile.addEventListener('click', loadData);
+        
+        printBtn.addEventListener('click', () => window.print());
+        printBtnMobile.addEventListener('click', () => window.print());
+        
+        // Enter key untuk search
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') searchData();
+        });
+        
+        searchInputMobile.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') searchData();
+        });
+        
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileControls.classList.toggle('active');
+        });
+        
+        // Tutup mobile menu ketika klik di luar
+        document.addEventListener('click', (e) => {
+            if (!mobileControls.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileControls.classList.remove('active');
+            }
+        });
         
         // Muat data pertama kali saat halaman dimuat
         document.addEventListener('DOMContentLoaded', loadData);
@@ -651,6 +1103,10 @@
                     width: 100%;
                 }
                 
+                .table-container {
+                    overflow: visible;
+                }
+                
                 table {
                     width: 100%;
                     border-collapse: collapse;
@@ -666,10 +1122,21 @@
                     border: 1px solid #ddd;
                     padding: 8px;
                 }
+                
+                .status-lengkap {
+                    color: #27ae60 !important;
+                }
+                
+                .status-kurang {
+                    color: #f39c12 !important;
+                }
+                
+                .status-kosong {
+                    color: #e74c3c !important;
+                }
             }
         `;
         document.head.appendChild(printStyle);
-        
     </script>
 </body>
 </html>
