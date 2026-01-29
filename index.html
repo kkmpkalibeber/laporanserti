@@ -736,7 +736,7 @@
                 </div>
                 
                 <div class="last-update">
-                    Data diambil dari: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv" target="_blank">Google Sheets</a>
+                    Data diambil dari: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?output=csv" target="_blank">Google Sheets</a>
                 </div>
             </div>
             
@@ -764,13 +764,14 @@
             <div class="footer-note">
                 <p><i class="fas fa-info-circle"></i> <strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
                 <p><i class="fas fa-sync-alt"></i> <strong>Info:</strong> Data diambil otomatis dari Google Sheets. Klik "Refresh Data" untuk memperbarui.</p>
+                <p><i class="fas fa-sort-alpha-down"></i> <strong>Urutan:</strong> Data sudah diurutkan berdasarkan nama dari A-Z.</p>
             </div>
         </div>
     </div>
 
     <script>
         // URL Google Sheets yang sudah dipublish
-        const GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv";
+        const GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?output=csv";
         
         // Data dari Google Sheets
         let iuranData = [];
@@ -825,7 +826,19 @@
         
         // Format tanggal untuk tampilan
         function formatDate(dateStr) {
-            if (!dateStr || dateStr.trim() === '' || dateStr === '0') return '-';
+            if (!dateStr || dateStr.trim() === '' || dateStr === '0' || dateStr === '-') return '-';
+            
+            // Cek apakah string adalah format tanggal (dd/mm/yyyy atau dd-mm-yyyy)
+            const dateRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/;
+            const match = dateStr.match(dateRegex);
+            
+            if (match) {
+                const day = match[1].padStart(2, '0');
+                const month = match[2].padStart(2, '0');
+                const year = match[3];
+                return `${day}/${month}/${year}`;
+            }
+            
             return dateStr;
         }
         
@@ -845,7 +858,11 @@
         
         // Parse nominal dari string (handle berbagai format)
         function parseNominal(str) {
-            if (!str || str.trim() === '') return 0;
+            if (!str || str.trim() === '' || str.trim() === '-') return 0;
+            
+            // Cek apakah string adalah angka
+            const numRegex = /^[\d,.]+$/;
+            if (!numRegex.test(str.trim())) return 0;
             
             // Hilangkan karakter non-digit kecuali koma dan titik
             let cleaned = str.toString().replace(/[^\d,.]/g, '');
@@ -856,6 +873,51 @@
             // Parse sebagai float, lalu konversi ke integer
             const parsed = parseFloat(cleaned);
             return isNaN(parsed) ? 0 : Math.round(parsed);
+        }
+        
+        // Parse data setoran dari format gabungan "tanggal|nominal"
+        function parseSetoranData(setoranStr) {
+            if (!setoranStr || setoranStr.trim() === '' || setoranStr.trim() === '-') {
+                return { tanggal: '', nominal: 0 };
+            }
+            
+            const str = setoranStr.trim();
+            
+            // Coba split dengan pipe (|)
+            if (str.includes('|')) {
+                const parts = str.split('|').map(p => p.trim());
+                if (parts.length >= 2) {
+                    return {
+                        tanggal: formatDate(parts[0]),
+                        nominal: parseNominal(parts[1])
+                    };
+                }
+            }
+            
+            // Cek apakah string adalah tanggal
+            const dateRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/;
+            if (dateRegex.test(str)) {
+                return { tanggal: formatDate(str), nominal: 0 };
+            }
+            
+            // Coba parse sebagai nominal
+            const nominal = parseNominal(str);
+            if (nominal > 0) {
+                return { tanggal: '', nominal: nominal };
+            }
+            
+            return { tanggal: '', nominal: 0 };
+        }
+        
+        // Urutkan data berdasarkan nama dari A-Z
+        function sortDataByName(data) {
+            return data.sort((a, b) => {
+                const nameA = a.nama.toUpperCase();
+                const nameB = b.nama.toUpperCase();
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
         }
         
         // Hitung total setoran per anggota (6 setoran)
@@ -998,37 +1060,37 @@
                             <td>${item.nama}</td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran1.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran2.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran3.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran4.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran5.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(item.setoran6.tanggal)}</div>
+                                    <div class="date-cell">${item.setoran6.tanggal || '-'}</div>
                                     <div class="numeric-cell">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
                                 </div>
                             </td>
@@ -1054,7 +1116,7 @@
                             <td>${item.nama}</td>
                             <td>
                                 <div class="setoran-cell">
-                                    <div class="date-cell">${formatDate(kategoriData.tanggal)}</div>
+                                    <div class="date-cell">${kategoriData.tanggal || '-'}</div>
                                     <div class="numeric-cell">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
                                 </div>
                             </td>
@@ -1157,25 +1219,32 @@
                     
                     cols.push(currentCol); // Add last column
                     
-                    if (cols.length >= 13) {
+                    // Struktur baru: NAMA, setoran 1, setoran 2, setoran 3, setoran 4, setoran 5, setoran 6
+                    // Format: "tanggal|nominal" atau hanya nominal atau hanya tanggal
+                    if (cols.length >= 7) {
                         const nama = cols[0].trim();
                         
                         const newItem = {
                             nama: nama,
-                            setoran1: { tanggal: cols[1]?.trim() || '', nominal: parseNominal(cols[2]) },
-                            setoran2: { tanggal: cols[3]?.trim() || '', nominal: parseNominal(cols[4]) },
-                            setoran3: { tanggal: cols[5]?.trim() || '', nominal: parseNominal(cols[6]) },
-                            setoran4: { tanggal: cols[7]?.trim() || '', nominal: parseNominal(cols[8]) },
-                            setoran5: { tanggal: cols[9]?.trim() || '', nominal: parseNominal(cols[10]) },
-                            setoran6: { tanggal: cols[11]?.trim() || '', nominal: parseNominal(cols[12]) }
+                            setoran1: parseSetoranData(cols[1]),
+                            setoran2: parseSetoranData(cols[2]),
+                            setoran3: parseSetoranData(cols[3]),
+                            setoran4: parseSetoranData(cols[4]),
+                            setoran5: parseSetoranData(cols[5]),
+                            setoran6: parseSetoranData(cols[6])
                         };
                         
-                        newData.push(newItem);
+                        // Hanya tambahkan jika ada nama
+                        if (nama) {
+                            newData.push(newItem);
+                        }
                     }
                 }
                 
                 if (newData.length > 0) {
-                    iuranData = newData;
+                    // Urutkan data berdasarkan nama dari A-Z
+                    iuranData = sortDataByName(newData);
+                    
                     lastUpdateTime = new Date();
                     lastUpdateTimeEl.textContent = formatDateTime(lastUpdateTime);
                     
@@ -1284,37 +1353,37 @@
                             <td style="font-size: 11px;">${item.nama}</td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran1.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran1.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran2.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran2.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran3.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran3.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran4.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran4.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran5.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran5.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
                                 </div>
                             </td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran6.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${item.setoran6.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
                                 </div>
                             </td>
@@ -1340,7 +1409,7 @@
                             <td style="font-size: 11px;">${item.nama}</td>
                             <td>
                                 <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${formatDate(kategoriData.tanggal)}</div>
+                                    <div style="color: #666; font-size: 10px;">${kategoriData.tanggal || '-'}</div>
                                     <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
                                 </div>
                             </td>
@@ -1424,41 +1493,7 @@
             password.value = '';
             
             // Ambil data dari Google Sheets
-            const success = await fetchDataFromGoogleSheets();
-            
-            if (!success) {
-                // Tampilkan data contoh jika gagal mengambil dari Google Sheets
-                alert('Gagal mengambil data dari Google Sheets. Menampilkan data contoh untuk demo.');
-                
-                // Data contoh jika Google Sheets tidak bisa diakses
-                iuranData = [
-                    {
-                        nama: "CHRISTINA, S.Pd",
-                        setoran1: { tanggal: "24/11/2024", nominal: 200000 },
-                        setoran2: { tanggal: "24/11/2024", nominal: 200000 },
-                        setoran3: { tanggal: "28/03/2025", nominal: 200000 },
-                        setoran4: { tanggal: "15/07/2025", nominal: 200000 },
-                        setoran5: { tanggal: "", nominal: 0 },
-                        setoran6: { tanggal: "", nominal: 0 }
-                    },
-                    {
-                        nama: "MUKHAMMAD HAROWI, S.Pd.",
-                        setoran1: { tanggal: "07/12/2024", nominal: 160000 },
-                        setoran2: { tanggal: "", nominal: 0 },
-                        setoran3: { tanggal: "14/04/2025", nominal: 120000 },
-                        setoran4: { tanggal: "24/07/2025", nominal: 60000 },
-                        setoran5: { tanggal: "", nominal: 0 },
-                        setoran6: { tanggal: "", nominal: 0 }
-                    }
-                ];
-                
-                lastUpdateTime = new Date();
-                lastUpdateTimeEl.textContent = formatDateTime(lastUpdateTime) + " (Data Contoh)";
-                dataInfo.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <span>Gagal mengambil data dari Google Sheets. Menampilkan data contoh. Terakhir diperbarui: ${formatDateTime(lastUpdateTime)}</span>`;
-                
-                updateNamaFilter();
-                displayData();
-            }
+            await fetchDataFromGoogleSheets();
         });
         
         logoutBtn.addEventListener('click', () => {
