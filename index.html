@@ -2,9 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Data Iuran Sertifikasi SMA Takhassus Al Quran</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Setoran</title>
     <style>
         * {
             margin: 0;
@@ -14,1607 +13,461 @@
         }
         
         body {
-            background-color: #f5f9fc;
+            background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
-            padding: 10px;
-            -webkit-text-size-adjust: 100%;
+            padding: 20px;
         }
         
         .container {
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
         }
         
         header {
-            background: linear-gradient(to right, #2c6e49, #4c956c);
-            color: white;
-            padding: 20px 15px;
             text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
         }
         
         h1 {
-            font-size: 22px;
-            margin-bottom: 5px;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
         
-        .subtitle {
-            font-size: 14px;
-            opacity: 0.9;
+        .description {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         
-        .login-section {
-            padding: 20px 15px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #eaeaea;
+        .controls {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
             gap: 15px;
         }
         
-        @media (min-width: 768px) {
-            .login-section {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            
-            h1 {
-                font-size: 28px;
-            }
-            
-            header {
-                padding: 25px 30px;
-            }
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #4c956c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        button {
+            background-color: #3498db;
             color: white;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-        
-        @media (min-width: 768px) {
-            .login-form {
-                flex-direction: row;
-                width: auto;
-            }
-        }
-        
-        .login-form input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            width: 100%;
-        }
-        
-        .btn {
-            padding: 12px 20px;
             border: none;
-            border-radius: 6px;
+            padding: 12px 24px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 16px;
-            white-space: nowrap;
-            width: 100%;
         }
         
-        @media (min-width: 768px) {
-            .btn {
-                width: auto;
-            }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .btn-primary {
-            background-color: #4c956c;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2c6e49;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-        
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background-color: #218838;
-        }
-        
-        .btn-print {
-            background-color: #1e88e5;
-            color: white;
-        }
-        
-        .btn-print:hover {
-            background-color: #0d6bb5;
-        }
-        
-        .content {
-            padding: 20px 15px;
-        }
-        
-        @media (min-width: 768px) {
-            .content {
-                padding: 30px;
-            }
-        }
-        
-        .search-section {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #eaeaea;
-        }
-        
-        @media (min-width: 768px) {
-            .search-section {
-                padding: 20px;
-                margin-bottom: 30px;
-            }
-        }
-        
-        .section-title {
-            color: #2c6e49;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4c956c;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .search-form {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        @media (min-width: 768px) {
-            .search-form {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group label {
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-            font-size: 15px;
-        }
-        
-        .results-summary {
-            background-color: #e9f5ef;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        @media (min-width: 768px) {
-            .results-summary {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-        
-        .results-summary h3 {
-            color: #2c6e49;
-            font-size: 18px;
-        }
-        
-        .total-amount {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c6e49;
+        .loading {
             text-align: center;
+            padding: 30px;
+            font-size: 18px;
+            color: #7f8c8d;
         }
         
-        @media (min-width: 768px) {
-            .total-amount {
-                font-size: 22px;
-                text-align: right;
-            }
-        }
-        
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        @media (min-width: 768px) {
-            .action-buttons {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
+        .error {
+            background-color: #ffeaea;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c0392b;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            font-size: 14px;
+            margin-top: 20px;
             overflow-x: auto;
             display: block;
         }
         
-        @media (min-width: 768px) {
-            table {
-                display: table;
-                font-size: 14px;
-            }
-        }
-        
         th {
-            background-color: #4c956c;
+            background-color: #2c3e50;
             color: white;
+            padding: 15px;
             text-align: left;
-            padding: 12px 8px;
+            position: sticky;
+            top: 0;
             font-weight: 600;
-            white-space: nowrap;
         }
         
         td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
+            padding: 14px 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
         }
         
         tr:hover {
-            background-color: #f9f9f9;
+            background-color: #f1f8ff;
         }
         
-        .numeric-cell {
+        .amount {
             text-align: right;
             font-family: 'Courier New', monospace;
             font-weight: 500;
         }
         
-        .date-cell {
-            color: #666;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-        
-        .setoran-cell {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
         .total-row {
-            background-color: #f0f7f3;
+            background-color: #e8f4fc !important;
             font-weight: bold;
+            color: #2c3e50;
         }
         
         .total-row td {
-            border-top: 2px solid #4c956c;
-            border-bottom: none;
+            border-top: 2px solid #3498db;
+            border-bottom: 2px solid #3498db;
         }
         
-        .footer-note {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 5px solid #4c956c;
-            font-size: 14px;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .alert {
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-        }
-        
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-        }
-        
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
-        }
-        
-        .alert-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border-left: 5px solid #17a2b8;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px 15px;
-            color: #666;
-        }
-        
-        .empty-state i {
-            font-size: 50px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        
-        .empty-state h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        /* Pagination Styles */
-        .pagination {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 15px;
+        .summary {
+            margin-top: 25px;
+            padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
-        }
-        
-        @media (min-width: 768px) {
-            .pagination {
-                flex-direction: row;
-                justify-content: center;
-            }
-        }
-        
-        .pagination-buttons {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
         }
         
-        .pagination button {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            background-color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            min-width: 120px;
-        }
-        
-        .pagination button:hover:not(:disabled) {
-            background-color: #4c956c;
-            color: white;
-            border-color: #4c956c;
-        }
-        
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .pagination .page-info {
-            font-weight: 500;
-            color: #555;
+        .summary-item {
             text-align: center;
-            font-size: 15px;
+            flex: 1;
+            min-width: 200px;
         }
         
-        /* Print Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-                margin: 0;
-                padding: 0;
-            }
-            
-            #printSection, #printSection * {
-                visibility: visible;
-            }
-            
-            #printSection {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        
+        .summary-label {
+            color: #7f8c8d;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #95a5a6;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
                 padding: 15px;
-                background-color: white;
-                font-size: 12px;
-                line-height: 1.4;
             }
             
-            .no-print {
-                display: none !important;
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
             }
             
-            #printSection table {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                font-size: 11px;
+            button {
                 width: 100%;
-                page-break-inside: auto;
-                border-collapse: collapse;
             }
             
-            #printSection tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-            
-            #printSection th {
-                background-color: #f0f0f0 !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact;
-                padding: 6px 4px;
-                font-size: 11px;
-            }
-            
-            #printSection td {
-                padding: 6px 4px;
-                font-size: 11px;
-            }
-            
-            #printSection .footer-note {
-                border: 1px solid #ddd;
-                margin-top: 15px;
-                page-break-inside: avoid;
-                font-size: 11px;
-                padding: 10px;
-            }
-            
-            #printSection .print-header {
-                text-align: center;
-                margin-bottom: 15px;
-                border-bottom: 2px solid #333;
-                padding-bottom: 10px;
-                page-break-after: avoid;
-            }
-            
-            #printSection .print-summary {
-                background-color: #f0f0f0;
-                padding: 8px;
-                margin-bottom: 12px;
-                border-radius: 4px;
-                font-size: 12px;
-                page-break-after: avoid;
-            }
-            
-            #printSection .print-info {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 12px;
-                font-size: 11px;
-                page-break-after: avoid;
-                flex-wrap: wrap;
-            }
-            
-            #printSection h2 {
-                font-size: 16px;
-                margin-bottom: 5px;
-            }
-            
-            #printSection h3 {
-                font-size: 14px;
-                margin-bottom: 5px;
-            }
-        }
-        
-        /* Mobile-specific adjustments */
-        @media (max-width: 767px) {
             table {
-                font-size: 12px;
+                font-size: 14px;
             }
             
             th, td {
-                padding: 8px 5px;
+                padding: 10px;
             }
-            
-            .btn {
-                padding: 12px 15px;
-            }
-            
-            .login-form input {
-                padding: 12px;
-            }
-        }
-        
-        /* Print Preview Modal */
-        .print-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        
-        .print-modal-content {
-            background-color: white;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow: auto;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .print-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #ddd;
-            background-color: #f8f9fa;
-            border-radius: 10px 10px 0 0;
-        }
-        
-        .print-modal-body {
-            padding: 20px;
-            overflow: auto;
-        }
-        
-        .print-modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 15px 20px;
-            border-top: 1px solid #ddd;
-            background-color: #f8f9fa;
-            border-radius: 0 0 10px 10px;
-        }
-        
-        /* Loading spinner */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,.1);
-            border-radius: 50%;
-            border-top-color: #4c956c;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .last-update {
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            margin-top: 10px;
-            font-style: italic;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-quran"></i> Data Iuran Sertifikasi SMA Takhassus Al Quran</h1>
-            <p class="subtitle">Sistem Pengelolaan Data Iuran Anggota - Data Otomatis dari Google Sheets</p>
+            <h1>Data Setoran</h1>
+            <p class="description">Data setoran otomatis diambil dari Google Sheets. Sistem akan menyesuaikan otomatis jika ada tambahan kolom setoran baru.</p>
         </header>
         
-        <div class="login-section">
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">?</div>
-                <div>
-                    <div id="userStatus">Silakan login untuk mengakses data</div>
-                    <div id="userRole" class="subtitle">Password: sejahtera</div>
-                </div>
+        <div class="controls">
+            <div>
+                <button id="loadData">Muat Ulang Data</button>
             </div>
+            <div id="lastUpdate"></div>
+        </div>
+        
+        <div id="loading" class="loading">Memuat data dari Google Sheets...</div>
+        <div id="errorContainer" style="display: none;"></div>
+        
+        <div id="tableContainer" style="display: none;">
+            <table id="dataTable">
+                <thead>
+                    <tr id="tableHeader">
+                        <!-- Header akan diisi oleh JavaScript -->
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
             
-            <div class="login-form">
-                <input type="password" id="password" placeholder="Masukkan password: sejahtera" class="no-print">
-                <button class="btn btn-primary no-print" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
-                <button class="btn btn-secondary hidden no-print" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                <button class="btn btn-success hidden no-print" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh Data</button>
+            <div class="summary" id="summaryContainer">
+                <!-- Summary akan diisi oleh JavaScript -->
             </div>
         </div>
         
-        <div class="content">
-            <!-- Search Section -->
-            <div class="search-section hidden" id="searchSection">
-                <h2 class="section-title"><i class="fas fa-search"></i> Cari Data Iuran</h2>
-                
-                <div class="alert alert-info" id="dataInfo">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Data diambil langsung dari Google Sheets. Terakhir diperbarui: <span id="lastUpdateTime">Belum pernah</span></span>
-                </div>
-                
-                <div class="search-form no-print">
-                    <div class="form-group">
-                        <label for="namaFilter">Nama Anggota</label>
-                        <select id="namaFilter">
-                            <option value="Semua Anggota">Semua Anggota</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="kategoriFilter">Kategori Setoran</label>
-                        <select id="kategoriFilter">
-                            <option value="Semua Setoran">Semua Setoran</option>
-                            <option value="Setoran 1">Setoran 1</option>
-                            <option value="Setoran 2">Setoran 2</option>
-                            <option value="Setoran 3">Setoran 3</option>
-                            <option value="Setoran 4">Setoran 4</option>
-                            <option value="Setoran 5">Setoran 5</option>
-                            <option value="Setoran 6">Setoran 6</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label style="visibility: hidden;">Aksi</label>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="btn btn-primary" id="searchBtn"><i class="fas fa-filter"></i> Tampilkan</button>
-                            <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
-                            <button class="btn btn-print" id="printBtn"><i class="fas fa-print"></i> Cetak PDF</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="results-summary hidden" id="resultsSummary">
-                    <h3>Hasil Pencarian</h3>
-                    <div class="total-amount" id="totalAmount">Rp0</div>
-                </div>
-                
-                <div id="dataTableContainer">
-                    <div class="empty-state" id="emptyState">
-                        <i class="fas fa-database"></i>
-                        <h3>Belum ada data</h3>
-                        <p>Silakan login untuk memuat data dari Google Sheets.</p>
-                    </div>
-                </div>
-                
-                <div class="pagination hidden" id="paginationContainer">
-                    <div class="pagination-buttons">
-                        <button id="prevPageBtn" disabled><i class="fas fa-chevron-left"></i> Sebelumnya</button>
-                        <button id="nextPageBtn" disabled>Selanjutnya <i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
-                </div>
-                
-                <div class="last-update">
-                    Data diambil dari: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?output=csv" target="_blank">Google Sheets</a>
-                </div>
-            </div>
-            
-            <!-- Print Section (Hidden) -->
-            <div id="printSection" class="hidden"></div>
-            
-            <!-- Print Modal -->
-            <div id="printModal" class="print-modal hidden">
-                <div class="print-modal-content">
-                    <div class="print-modal-header">
-                        <h3 style="margin: 0;">Print Preview</h3>
-                        <button id="closePrintModal" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #666;">&times;</button>
-                    </div>
-                    <div class="print-modal-body" id="printModalBody">
-                        <!-- Print preview will be inserted here -->
-                    </div>
-                    <div class="print-modal-actions">
-                        <button class="btn btn-secondary" id="cancelPrintBtn">Batal</button>
-                        <button class="btn btn-primary" id="confirmPrintBtn"><i class="fas fa-print"></i> Cetak Sekarang</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Footer Note -->
-            <div class="footer-note">
-                <p><i class="fas fa-info-circle"></i> <strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
-                <p><i class="fas fa-sync-alt"></i> <strong>Info:</strong> Data diambil otomatis dari Google Sheets. Klik "Refresh Data" untuk memperbarui.</p>
-                <p><i class="fas fa-sort-alpha-down"></i> <strong>Urutan:</strong> Data sudah diurutkan berdasarkan nama dari A-Z.</p>
-            </div>
-        </div>
+        <footer>
+            <p>Data diambil dari: https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv</p>
+            <p>Sistem otomatis menyesuaikan dengan kolom setoran yang ada</p>
+        </footer>
     </div>
 
     <script>
-        // URL Google Sheets yang sudah dipublish
-        const GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?output=csv";
+        // URL spreadsheet Google Sheets
+        const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2P6BfjsKn3saegl7OI-ys6U09zQROzMGkysVTCpqemav1mA-V5jVDW3NwLM4Fxtj_sXpAX21K1amd/pub?gid=0&single=true&output=csv";
         
-        // Data dari Google Sheets
-        let iuranData = [];
-        let lastUpdateTime = null;
+        // Elemen DOM
+        const loadingElement = document.getElementById('loading');
+        const errorContainer = document.getElementById('errorContainer');
+        const tableContainer = document.getElementById('tableContainer');
+        const tableHeader = document.getElementById('tableHeader');
+        const tableBody = document.getElementById('tableBody');
+        const summaryContainer = document.getElementById('summaryContainer');
+        const loadDataButton = document.getElementById('loadData');
+        const lastUpdateElement = document.getElementById('lastUpdate');
         
-        // State aplikasi
-        let currentUser = null;
-        let currentFilter = {
-            nama: "Semua Anggota",
-            kategori: "Semua Setoran"
-        };
-        let currentPage = 1;
-        const itemsPerPage = 20;
-        let filteredData = [];
-        
-        // DOM Elements
-        const userAvatar = document.getElementById('userAvatar');
-        const userStatus = document.getElementById('userStatus');
-        const userRole = document.getElementById('userRole');
-        const password = document.getElementById('password');
-        const loginBtn = document.getElementById('loginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const searchSection = document.getElementById('searchSection');
-        const namaFilter = document.getElementById('namaFilter');
-        const kategoriFilter = document.getElementById('kategoriFilter');
-        const searchBtn = document.getElementById('searchBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const printBtn = document.getElementById('printBtn');
-        const dataInfo = document.getElementById('dataInfo');
-        const lastUpdateTimeEl = document.getElementById('lastUpdateTime');
-        const resultsSummary = document.getElementById('resultsSummary');
-        const totalAmount = document.getElementById('totalAmount');
-        const dataTableContainer = document.getElementById('dataTableContainer');
-        const emptyState = document.getElementById('emptyState');
-        const printSection = document.getElementById('printSection');
-        const paginationContainer = document.getElementById('paginationContainer');
-        const prevPageBtn = document.getElementById('prevPageBtn');
-        const nextPageBtn = document.getElementById('nextPageBtn');
-        const pageInfo = document.getElementById('pageInfo');
-        const printModal = document.getElementById('printModal');
-        const printModalBody = document.getElementById('printModalBody');
-        const closePrintModal = document.getElementById('closePrintModal');
-        const cancelPrintBtn = document.getElementById('cancelPrintBtn');
-        const confirmPrintBtn = document.getElementById('confirmPrintBtn');
-        
-        // Format angka dengan pemisah ribuan
-        function formatNumber(num) {
-            if (typeof num !== 'number') return '0';
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // Fungsi untuk memformat angka dengan pemisah ribuan
+        function formatNumber(number) {
+            if (isNaN(number)) return 'Rp0';
+            return 'Rp' + number.toLocaleString('id-ID');
         }
         
-        // Format tanggal untuk tampilan
-        function formatDate(dateStr) {
-            if (!dateStr || dateStr.trim() === '' || dateStr === '0' || dateStr === '-') return '-';
+        // Fungsi untuk membersihkan dan mengonversi nilai uang dari string
+        function cleanMoneyValue(value) {
+            if (!value || value.trim() === '') return 0;
             
-            // Cek apakah string adalah format tanggal (dd/mm/yyyy atau dd-mm-yyyy)
-            const dateRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/;
-            const match = dateStr.match(dateRegex);
+            // Hilangkan karakter non-angka kecuali koma dan titik
+            let cleaned = value.toString().replace(/[^0-9,.]/g, '');
             
-            if (match) {
-                const day = match[1].padStart(2, '0');
-                const month = match[2].padStart(2, '0');
-                const year = match[3];
-                return `${day}/${month}/${year}`;
-            }
-            
-            return dateStr;
-        }
-        
-        // Format tanggal dan waktu untuk info update
-        function formatDateTime(date) {
-            if (!date) return 'Belum pernah';
-            return date.toLocaleDateString('id-ID', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-        }
-        
-        // Parse nominal dari string (handle berbagai format)
-        function parseNominal(str) {
-            if (!str || str.trim() === '' || str.trim() === '-') return 0;
-            
-            // Cek apakah string adalah angka
-            const numRegex = /^[\d,.]+$/;
-            if (!numRegex.test(str.trim())) return 0;
-            
-            // Hilangkan karakter non-digit kecuali koma dan titik
-            let cleaned = str.toString().replace(/[^\d,.]/g, '');
-            
-            // Ganti koma dengan titik untuk parsing
+            // Ganti koma dengan titik (jika koma digunakan sebagai pemisah desimal)
             cleaned = cleaned.replace(',', '.');
             
-            // Parse sebagai float, lalu konversi ke integer
-            const parsed = parseFloat(cleaned);
-            return isNaN(parsed) ? 0 : Math.round(parsed);
+            // Parse ke float
+            const number = parseFloat(cleaned);
+            
+            return isNaN(number) ? 0 : number;
         }
         
-        // Parse data setoran dari format gabungan "tanggal|nominal"
-        function parseSetoranData(setoranStr) {
-            if (!setoranStr || setoranStr.trim() === '' || setoranStr.trim() === '-') {
-                return { tanggal: '', nominal: 0 };
-            }
-            
-            const str = setoranStr.trim();
-            
-            // Coba split dengan pipe (|)
-            if (str.includes('|')) {
-                const parts = str.split('|').map(p => p.trim());
-                if (parts.length >= 2) {
-                    return {
-                        tanggal: formatDate(parts[0]),
-                        nominal: parseNominal(parts[1])
-                    };
-                }
-            }
-            
-            // Cek apakah string adalah tanggal
-            const dateRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/;
-            if (dateRegex.test(str)) {
-                return { tanggal: formatDate(str), nominal: 0 };
-            }
-            
-            // Coba parse sebagai nominal
-            const nominal = parseNominal(str);
-            if (nominal > 0) {
-                return { tanggal: '', nominal: nominal };
-            }
-            
-            return { tanggal: '', nominal: 0 };
-        }
-        
-        // Urutkan data berdasarkan nama dari A-Z
-        function sortDataByName(data) {
-            return data.sort((a, b) => {
-                const nameA = a.nama.toUpperCase();
-                const nameB = b.nama.toUpperCase();
-                if (nameA < nameB) return -1;
-                if (nameA > nameB) return 1;
-                return 0;
-            });
-        }
-        
-        // Hitung total setoran per anggota (6 setoran)
-        function calculateTotal(setoran) {
-            return setoran.setoran1.nominal + setoran.setoran2.nominal + setoran.setoran3.nominal + 
-                   setoran.setoran4.nominal + setoran.setoran5.nominal + setoran.setoran6.nominal;
-        }
-        
-        // Update dropdown nama
-        function updateNamaFilter() {
-            namaFilter.innerHTML = '<option value="Semua Anggota">Semua Anggota</option>';
-            iuranData.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.nama;
-                option.textContent = item.nama;
-                namaFilter.appendChild(option);
-            });
-        }
-        
-        // Filter data berdasarkan kategori
-        function filterByKategori(data, kategori) {
-            if (kategori === "Semua Setoran") return data;
-            
-            // Buat salinan data untuk di-filter
-            let filteredData = JSON.parse(JSON.stringify(data));
-            
-            // Filter: hanya tampilkan data yang memiliki setoran pada kategori yang dipilih
-            filteredData = filteredData.map(item => {
-                let newItem = { ...item };
-                
-                // Reset semua nominal ke 0 untuk kolom yang tidak sesuai filter
-                if (kategori !== "Setoran 1") newItem.setoran1.nominal = 0;
-                if (kategori !== "Setoran 2") newItem.setoran2.nominal = 0;
-                if (kategori !== "Setoran 3") newItem.setoran3.nominal = 0;
-                if (kategori !== "Setoran 4") newItem.setoran4.nominal = 0;
-                if (kategori !== "Setoran 5") newItem.setoran5.nominal = 0;
-                if (kategori !== "Setoran 6") newItem.setoran6.nominal = 0;
-                
-                return newItem;
-            });
-            
-            return filteredData;
-        }
-        
-        // Tampilkan data dalam tabel dengan pagination
-        function displayData(filterNama = "Semua Anggota", filterKategori = "Semua Setoran", page = 1) {
-            currentFilter.nama = filterNama;
-            currentFilter.kategori = filterKategori;
-            currentPage = page;
-            
-            // Jika tidak ada data, tampilkan empty state
-            if (iuranData.length === 0) {
-                emptyState.classList.remove('hidden');
-                resultsSummary.classList.add('hidden');
-                paginationContainer.classList.add('hidden');
-                dataTableContainer.innerHTML = `
-                    <div class="empty-state" id="emptyState">
-                        <i class="fas fa-database"></i>
-                        <h3>Belum ada data</h3>
-                        <p>Data sedang dimuat dari Google Sheets...</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            emptyState.classList.add('hidden');
-            
-            // Filter data
-            filteredData = iuranData;
-            
-            // Filter berdasarkan nama
-            if (filterNama !== "Semua Anggota") {
-                filteredData = filteredData.filter(item => item.nama === filterNama);
-            }
-            
-            // Filter berdasarkan kategori
-            filteredData = filterByKategori(filteredData, filterKategori);
-            
-            // Hitung total dana
-            let totalDana = 0;
-            filteredData.forEach(item => {
-                totalDana += calculateTotal(item);
-            });
-            
-            // Tampilkan summary
-            resultsSummary.classList.remove('hidden');
-            totalAmount.textContent = `Rp${formatNumber(totalDana)}`;
-            
-            // Hitung pagination
-            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
-            const pageData = filteredData.slice(startIndex, endIndex);
-            
-            // Update pagination controls
-            updatePaginationControls(page, totalPages);
-            
-            // Buat tabel
-            let tableHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-            `;
-            
-            // Tentukan kolom mana yang akan ditampilkan berdasarkan kategori filter
-            if (filterKategori === "Semua Setoran") {
-                tableHTML += `
-                            <th>Setoran 1</th>
-                            <th>Setoran 2</th>
-                            <th>Setoran 3</th>
-                            <th>Setoran 4</th>
-                            <th>Setoran 5</th>
-                            <th>Setoran 6</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                `;
-            } else {
-                // Jika filter kategori tertentu, hanya tampilkan kolom kategori tersebut
-                tableHTML += `
-                            <th>${filterKategori}</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                `;
-            }
-            
-            pageData.forEach((item, index) => {
-                const total = calculateTotal(item);
-                const actualIndex = startIndex + index + 1;
-                
-                if (filterKategori === "Semua Setoran") {
-                    tableHTML += `
-                        <tr>
-                            <td>${actualIndex}</td>
-                            <td>${item.nama}</td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran1.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran2.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran3.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran4.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran5.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${item.setoran6.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
-                        </tr>
-                    `;
-                } else {
-                    // Tampilkan hanya kolom kategori yang difilter
-                    let kategoriData = { tanggal: '', nominal: 0 };
-                    
-                    switch(filterKategori) {
-                        case "Setoran 1": kategoriData = item.setoran1; break;
-                        case "Setoran 2": kategoriData = item.setoran2; break;
-                        case "Setoran 3": kategoriData = item.setoran3; break;
-                        case "Setoran 4": kategoriData = item.setoran4; break;
-                        case "Setoran 5": kategoriData = item.setoran5; break;
-                        case "Setoran 6": kategoriData = item.setoran6; break;
-                    }
-                    
-                    tableHTML += `
-                        <tr>
-                            <td>${actualIndex}</td>
-                            <td>${item.nama}</td>
-                            <td>
-                                <div class="setoran-cell">
-                                    <div class="date-cell">${kategoriData.tanggal || '-'}</div>
-                                    <div class="numeric-cell">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
-                        </tr>
-                    `;
-                }
-            });
-            
-            // Baris total (hanya jika ada data)
-            if (pageData.length > 0) {
-                // Hitung total untuk halaman ini
-                let pageTotal = 0;
-                pageData.forEach(item => {
-                    pageTotal += calculateTotal(item);
-                });
-                
-                if (filterKategori === "Semua Setoran") {
-                    tableHTML += `
-                            <tr class="total-row">
-                                <td colspan="8" style="text-align: right;">Total Dana (halaman ini):</td>
-                                <td class="numeric-cell">Rp${formatNumber(pageTotal)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    `;
-                } else {
-                    tableHTML += `
-                            <tr class="total-row">
-                                <td colspan="3" style="text-align: right;">Total Dana (halaman ini):</td>
-                                <td class="numeric-cell">Rp${formatNumber(pageTotal)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    `;
-                }
-            } else {
-                tableHTML += `
-                        </tbody>
-                    </table>
-                `;
-            }
-            
-            dataTableContainer.innerHTML = tableHTML;
-        }
-        
-        // Update pagination controls
-        function updatePaginationControls(currentPage, totalPages) {
-            if (filteredData.length > itemsPerPage) {
-                paginationContainer.classList.remove('hidden');
-                pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages} (${filteredData.length} data)`;
-                
-                prevPageBtn.disabled = currentPage === 1;
-                nextPageBtn.disabled = currentPage === totalPages;
-            } else {
-                paginationContainer.classList.add('hidden');
-            }
-        }
-        
-        // Ambil data dari Google Sheets
-        async function fetchDataFromGoogleSheets() {
+        // Fungsi untuk memuat data dari Google Sheets
+        async function loadData() {
             try {
-                // Tampilkan loading
-                dataInfo.innerHTML = `<i class="fas fa-spinner spinner"></i> <span>Sedang mengambil data dari Google Sheets...</span>`;
+                // Tampilkan loading, sembunyikan tabel dan error
+                loadingElement.style.display = 'block';
+                errorContainer.style.display = 'none';
+                tableContainer.style.display = 'none';
                 
-                const response = await fetch(GOOGLE_SHEETS_URL);
+                // Fetch data dari URL
+                const response = await fetch(SPREADSHEET_URL);
                 
                 if (!response.ok) {
-                    throw new Error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 
                 const csvText = await response.text();
                 
-                // Parse CSV
-                const rows = csvText.trim().split('\n');
-                const newData = [];
+                // Parse data CSV
+                const rows = csvText.split('\n').map(row => row.split(','));
                 
-                // Skip header row (baris pertama)
-                for (let i = 1; i < rows.length; i++) {
-                    const row = rows[i].trim();
-                    if (!row) continue;
-                    
-                    // Parse CSV row (handle quotes and commas inside values)
-                    const cols = [];
-                    let inQuotes = false;
-                    let currentCol = '';
-                    
-                    for (let j = 0; j < row.length; j++) {
-                        const char = row[j];
-                        
-                        if (char === '"') {
-                            inQuotes = !inQuotes;
-                        } else if (char === ',' && !inQuotes) {
-                            cols.push(currentCol);
-                            currentCol = '';
-                        } else {
-                            currentCol += char;
-                        }
-                    }
-                    
-                    cols.push(currentCol); // Add last column
-                    
-                    // Struktur baru: NAMA, setoran 1, setoran 2, setoran 3, setoran 4, setoran 5, setoran 6
-                    // Format: "tanggal|nominal" atau hanya nominal atau hanya tanggal
-                    if (cols.length >= 7) {
-                        const nama = cols[0].trim();
-                        
-                        const newItem = {
-                            nama: nama,
-                            setoran1: parseSetoranData(cols[1]),
-                            setoran2: parseSetoranData(cols[2]),
-                            setoran3: parseSetoranData(cols[3]),
-                            setoran4: parseSetoranData(cols[4]),
-                            setoran5: parseSetoranData(cols[5]),
-                            setoran6: parseSetoranData(cols[6])
-                        };
-                        
-                        // Hanya tambahkan jika ada nama
-                        if (nama) {
-                            newData.push(newItem);
-                        }
-                    }
+                if (rows.length < 2) {
+                    throw new Error('Data CSV tidak valid atau kosong');
                 }
                 
-                if (newData.length > 0) {
-                    // Urutkan data berdasarkan nama dari A-Z
-                    iuranData = sortDataByName(newData);
-                    
-                    lastUpdateTime = new Date();
-                    lastUpdateTimeEl.textContent = formatDateTime(lastUpdateTime);
-                    
-                    updateNamaFilter();
-                    currentPage = 1;
-                    displayData();
-                    
-                    dataInfo.innerHTML = `<i class="fas fa-check-circle"></i> <span>Data berhasil dimuat dari Google Sheets. Terakhir diperbarui: ${formatDateTime(lastUpdateTime)}</span>`;
-                    return true;
-                } else {
-                    throw new Error('Tidak ada data yang valid ditemukan di Google Sheets.');
+                // Header (baris pertama)
+                const headers = rows[0];
+                
+                // Data (baris kedua hingga akhir)
+                const dataRows = rows.slice(1).filter(row => row.length > 0 && row[0].trim() !== '');
+                
+                // Cari kolom-kolom setoran (dimulai dengan "setoran")
+                const setoranColumns = headers
+                    .map((header, index) => ({ header, index }))
+                    .filter(col => col.header.toLowerCase().includes('setoran'));
+                
+                // Cari kolom nama (biasanya kolom pertama)
+                const namaColumnIndex = headers.findIndex(header => 
+                    header.toLowerCase().includes('nama') || 
+                    header.toLowerCase().includes('name'));
+                
+                if (namaColumnIndex === -1) {
+                    throw new Error('Kolom "NAMA" tidak ditemukan dalam data');
                 }
+                
+                // Buat header tabel
+                tableHeader.innerHTML = '';
+                
+                // Tambahkan kolom nama
+                const namaHeader = document.createElement('th');
+                namaHeader.textContent = 'NAMA';
+                tableHeader.appendChild(namaHeader);
+                
+                // Tambahkan kolom setoran
+                setoranColumns.forEach(col => {
+                    const th = document.createElement('th');
+                    th.textContent = col.header.toUpperCase();
+                    th.classList.add('amount-header');
+                    tableHeader.appendChild(th);
+                });
+                
+                // Tambahkan kolom total
+                const totalHeader = document.createElement('th');
+                totalHeader.textContent = 'TOTAL';
+                totalHeader.classList.add('amount-header');
+                tableHeader.appendChild(totalHeader);
+                
+                // Bersihkan body tabel
+                tableBody.innerHTML = '';
+                
+                // Variabel untuk summary
+                let totalAllSetoran = 0;
+                let totalAllPeople = 0;
+                const columnTotals = new Array(setoranColumns.length).fill(0);
+                
+                // Proses setiap baris data
+                dataRows.forEach(row => {
+                    const tr = document.createElement('tr');
+                    
+                    // Kolom nama
+                    const namaCell = document.createElement('td');
+                    namaCell.textContent = row[namaColumnIndex] || '';
+                    tr.appendChild(namaCell);
+                    
+                    // Hitung total untuk orang ini
+                    let personTotal = 0;
+                    
+                    // Kolom setoran
+                    setoranColumns.forEach((col, colIndex) => {
+                        const td = document.createElement('td');
+                        td.classList.add('amount');
+                        
+                        const value = row[col.index] || '';
+                        const numericValue = cleanMoneyValue(value);
+                        
+                        td.textContent = formatNumber(numericValue);
+                        tr.appendChild(td);
+                        
+                        // Tambahkan ke total orang ini
+                        personTotal += numericValue;
+                        
+                        // Tambahkan ke total kolom
+                        columnTotals[colIndex] += numericValue;
+                    });
+                    
+                    // Kolom total per orang
+                    const totalCell = document.createElement('td');
+                    totalCell.classList.add('amount');
+                    totalCell.textContent = formatNumber(personTotal);
+                    tr.appendChild(totalCell);
+                    
+                    // Tambahkan ke body tabel
+                    tableBody.appendChild(tr);
+                    
+                    // Tambahkan ke total keseluruhan
+                    totalAllSetoran += personTotal;
+                    totalAllPeople++;
+                });
+                
+                // Tambahkan baris total
+                const totalRow = document.createElement('tr');
+                totalRow.classList.add('total-row');
+                
+                // Sel untuk label "TOTAL"
+                const totalLabelCell = document.createElement('td');
+                totalLabelCell.textContent = `TOTAL (${totalAllPeople} orang)`;
+                totalRow.appendChild(totalLabelCell);
+                
+                // Total untuk setiap kolom setoran
+                columnTotals.forEach(total => {
+                    const td = document.createElement('td');
+                    td.classList.add('amount');
+                    td.textContent = formatNumber(total);
+                    totalRow.appendChild(td);
+                });
+                
+                // Total keseluruhan
+                const grandTotalCell = document.createElement('td');
+                grandTotalCell.classList.add('amount');
+                grandTotalCell.textContent = formatNumber(totalAllSetoran);
+                totalRow.appendChild(grandTotalCell);
+                
+                tableBody.appendChild(totalRow);
+                
+                // Update summary
+                summaryContainer.innerHTML = `
+                    <div class="summary-item">
+                        <div class="summary-label">Jumlah Orang</div>
+                        <div class="summary-value">${totalAllPeople}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Jumlah Setoran</div>
+                        <div class="summary-value">${setoranColumns.length}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Total Keseluruhan</div>
+                        <div class="summary-value">${formatNumber(totalAllSetoran)}</div>
+                    </div>
+                `;
+                
+                // Update waktu terakhir data dimuat
+                const now = new Date();
+                lastUpdateElement.textContent = `Terakhir diperbarui: ${now.toLocaleDateString('id-ID')} ${now.toLocaleTimeString('id-ID')}`;
+                
+                // Sembunyikan loading, tampilkan tabel
+                loadingElement.style.display = 'none';
+                tableContainer.style.display = 'block';
                 
             } catch (error) {
-                console.error('Error fetching data:', error);
-                dataInfo.innerHTML = `<i class="fas fa-exclamation-circle"></i> <span>Gagal mengambil data: ${error.message}. Pastikan URL Google Sheets benar dan sudah dipublish.</span>`;
-                return false;
+                console.error('Error loading data:', error);
+                
+                // Tampilkan pesan error
+                loadingElement.style.display = 'none';
+                errorContainer.style.display = 'block';
+                errorContainer.innerHTML = `
+                    <div class="error">
+                        <strong>Gagal memuat data:</strong> ${error.message}<br>
+                        Pastikan URL spreadsheet benar dan dapat diakses.
+                    </div>
+                    <button onclick="loadData()">Coba Lagi</button>
+                `;
             }
         }
         
-        // Siapkan konten untuk dicetak
-        function preparePrintContent() {
-            const filterNama = currentFilter.nama;
-            const filterKategori = currentFilter.kategori;
-            
-            // Gunakan filteredData yang sudah ada
-            if (filteredData.length === 0) {
-                alert('Tidak ada data untuk dicetak. Silakan filter data terlebih dahulu.');
-                return false;
-            }
-            
-            // Hitung total dana
-            let totalDana = 0;
-            filteredData.forEach(item => {
-                totalDana += calculateTotal(item);
-            });
-            
-            // Buat konten untuk print
-            let printHTML = `
-                <div class="print-header">
-                    <h2 style="margin-bottom: 5px; font-size: 18px;">Data Iuran Sertifikasi SMA Takhassus Al Quran</h2>
-                    <p style="margin-bottom: 10px; color: #666; font-size: 14px;">Sistem Pengelolaan Data Iuran Anggota</p>
-                    <hr style="border: none; border-top: 2px solid #333; margin: 10px 0;">
-                </div>
-                
-                <div class="print-info">
-                    <div>
-                        <strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    </div>
-                    <div>
-                        <strong>Filter:</strong> ${filterNama} | ${filterKategori}
-                    </div>
-                    <div>
-                        <strong>Sumber Data:</strong> Google Sheets
-                    </div>
-                </div>
-                
-                <div class="print-summary">
-                    <h3 style="margin: 0 0 10px 0; font-size: 16px;">Hasil Pencarian</h3>
-                    <div style="font-size: 18px; font-weight: bold; color: #2c6e49;">Total: Rp${formatNumber(totalDana)}</div>
-                    <div style="font-size: 13px; margin-top: 5px;">Jumlah Data: ${filteredData.length} anggota</div>
-                </div>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-            `;
-            
-            // Tentukan kolom mana yang akan ditampilkan berdasarkan kategori filter
-            if (filterKategori === "Semua Setoran") {
-                printHTML += `
-                            <th>Setoran 1</th>
-                            <th>Setoran 2</th>
-                            <th>Setoran 3</th>
-                            <th>Setoran 4</th>
-                            <th>Setoran 5</th>
-                            <th>Setoran 6</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                `;
-            } else {
-                // Jika filter kategori tertentu, hanya tampilkan kolom kategori tersebut
-                printHTML += `
-                            <th>${filterKategori}</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                `;
-            }
-            
-            // Batasi data untuk cetak (semua data, tidak dipaginasi)
-            const printData = filteredData.slice(0, 100); // Maksimal 100 data untuk cetak
-            
-            printData.forEach((item, index) => {
-                const total = calculateTotal(item);
-                
-                if (filterKategori === "Semua Setoran") {
-                    printHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td style="font-size: 11px;">${item.nama}</td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran1.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran2.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran3.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran4.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran5.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${item.setoran6.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace; font-size: 11px;">Rp${formatNumber(total)}</td>
-                        </tr>
-                    `;
-                } else {
-                    // Tampilkan hanya kolom kategori yang difilter
-                    let kategoriData = { tanggal: '', nominal: 0 };
-                    
-                    switch(filterKategori) {
-                        case "Setoran 1": kategoriData = item.setoran1; break;
-                        case "Setoran 2": kategoriData = item.setoran2; break;
-                        case "Setoran 3": kategoriData = item.setoran3; break;
-                        case "Setoran 4": kategoriData = item.setoran4; break;
-                        case "Setoran 5": kategoriData = item.setoran5; break;
-                        case "Setoran 6": kategoriData = item.setoran6; break;
-                    }
-                    
-                    printHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td style="font-size: 11px;">${item.nama}</td>
-                            <td>
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #666; font-size: 10px;">${kategoriData.tanggal || '-'}</div>
-                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
-                                </div>
-                            </td>
-                            <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace; font-size: 11px;">Rp${formatNumber(total)}</td>
-                        </tr>
-                    `;
-                }
-            });
-            
-            // Baris total
-            if (filterKategori === "Semua Setoran") {
-                printHTML += `
-                        <tr style="background-color: #f0f0f0; font-weight: bold;">
-                            <td colspan="8" style="text-align: right; padding: 10px; font-size: 12px;">Total Dana:</td>
-                            <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace; font-size: 12px;">Rp${formatNumber(totalDana)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                `;
-            } else {
-                printHTML += `
-                        <tr style="background-color: #f0f0f0; font-weight: bold;">
-                            <td colspan="3" style="text-align: right; padding: 10px; font-size: 12px;">Total Dana:</td>
-                            <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace; font-size: 12px;">Rp${formatNumber(totalDana)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                `;
-            }
-            
-            printHTML += `
-                <div class="footer-note">
-                    <p><strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
-                    <p style="font-size: 11px; margin-top: 5px;"><strong>Total Data:</strong> ${filteredData.length} anggota | <strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID')} | <strong>Sumber:</strong> Google Sheets</p>
-                </div>
-            `;
-            
-            return printHTML;
-        }
+        // Event listener untuk tombol muat ulang
+        loadDataButton.addEventListener('click', loadData);
         
-        // Tampilkan modal print preview
-        function showPrintPreview() {
-            if (iuranData.length === 0) {
-                alert('Tidak ada data untuk dicetak. Silakan login terlebih dahulu.');
-                return;
-            }
-            
-            const printHTML = preparePrintContent();
-            if (!printHTML) return;
-            
-            // Tampilkan preview di modal
-            printModalBody.innerHTML = printHTML;
-            printModal.classList.remove('hidden');
-            
-            // Scroll ke atas modal
-            printModalBody.scrollTop = 0;
-        }
+        // Muat data pertama kali saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadData);
         
-        // Event Listeners
-        loginBtn.addEventListener('click', async () => {
-            const enteredPassword = password.value;
-            
-            if (enteredPassword !== 'sejahtera') {
-                alert('Password salah! Password yang benar adalah: sejahtera');
-                return;
-            }
-            
-            currentUser = 'anggota';
-            
-            // Update UI setelah login
-            userAvatar.textContent = 'A';
-            userAvatar.style.backgroundColor = '#4c956c';
-            userStatus.textContent = `Login sebagai: Anggota`;
-            userRole.textContent = 'Akses melihat data';
-            
-            // Tampilkan elemen yang sesuai
-            searchSection.classList.remove('hidden');
-            loginBtn.classList.add('hidden');
-            logoutBtn.classList.remove('hidden');
-            refreshBtn.classList.remove('hidden');
-            password.value = '';
-            
-            // Ambil data dari Google Sheets
-            await fetchDataFromGoogleSheets();
-        });
-        
-        logoutBtn.addEventListener('click', () => {
-            currentUser = null;
-            
-            // Reset UI
-            userAvatar.textContent = '?';
-            userAvatar.style.backgroundColor = '#4c956c';
-            userStatus.textContent = 'Silakan login untuk mengakses data';
-            userRole.textContent = 'Password: sejahtera';
-            
-            // Sembunyikan elemen
-            searchSection.classList.add('hidden');
-            loginBtn.classList.remove('hidden');
-            logoutBtn.classList.add('hidden');
-            refreshBtn.classList.add('hidden');
-            
-            // Clear data yang ditampilkan
-            dataTableContainer.innerHTML = '';
-            resultsSummary.classList.add('hidden');
-            emptyState.classList.remove('hidden');
-            paginationContainer.classList.add('hidden');
-        });
-        
-        refreshBtn.addEventListener('click', async () => {
-            const success = await fetchDataFromGoogleSheets();
-            if (success) {
-                alert('Data berhasil diperbarui dari Google Sheets!');
-            }
-        });
-        
-        searchBtn.addEventListener('click', () => {
-            const selectedNama = namaFilter.value;
-            const selectedKategori = kategoriFilter.value;
-            currentPage = 1;
-            displayData(selectedNama, selectedKategori, 1);
-        });
-        
-        resetBtn.addEventListener('click', () => {
-            namaFilter.value = 'Semua Anggota';
-            kategoriFilter.value = 'Semua Setoran';
-            currentPage = 1;
-            displayData();
-        });
-        
-        printBtn.addEventListener('click', () => {
-            showPrintPreview();
-        });
-        
-        closePrintModal.addEventListener('click', () => {
-            printModal.classList.add('hidden');
-        });
-        
-        cancelPrintBtn.addEventListener('click', () => {
-            printModal.classList.add('hidden');
-        });
-        
-        confirmPrintBtn.addEventListener('click', () => {
-            // Siapkan konten untuk print sebenarnya
-            const printHTML = preparePrintContent();
-            if (printHTML) {
-                printSection.innerHTML = printHTML;
-                
-                // Tunggu sebentar sebelum memanggil print
-                setTimeout(() => {
-                    window.print();
-                    printModal.classList.add('hidden');
-                    
-                    // Reset print section setelah selesai
-                    setTimeout(() => {
-                        printSection.innerHTML = '';
-                    }, 100);
-                }, 100);
-            }
-        });
-        
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                displayData(currentFilter.nama, currentFilter.kategori, currentPage - 1);
-            }
-        });
-        
-        nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                displayData(currentFilter.nama, currentFilter.kategori, currentPage + 1);
-            }
-        });
-        
-        // Handle escape key untuk menutup modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !printModal.classList.contains('hidden')) {
-                printModal.classList.add('hidden');
-            }
-        });
-        
-        // Handle klik di luar modal untuk menutup
-        printModal.addEventListener('click', (e) => {
-            if (e.target === printModal) {
-                printModal.classList.add('hidden');
-            }
-        });
-        
-        // Inisialisasi - Kosong karena data akan diambil setelah login
-        
-        // Tambahkan event listener untuk mencegah zoom pada mobile dengan double tap
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (event) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-        
-        // Auto-refresh data setiap 5 menit (opsional)
-        setInterval(async () => {
-            if (currentUser) {
-                await fetchDataFromGoogleSheets();
-            }
-        }, 5 * 60 * 1000); // 5 menit
+        // Auto-refresh setiap 5 menit (opsional)
+        // setInterval(loadData, 5 * 60 * 1000);
     </script>
 </body>
 </html>
