@@ -93,8 +93,6 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            overflow-x: auto;
-            display: block;
         }
         
         th {
@@ -102,13 +100,11 @@
             color: white;
             padding: 15px;
             text-align: left;
-            position: sticky;
-            top: 0;
             font-weight: 600;
         }
         
         td {
-            padding: 14px 15px;
+            padding: 12px 15px;
             border-bottom: 1px solid #eaeaea;
         }
         
@@ -182,6 +178,38 @@
             border-top: 1px solid #eaeaea;
         }
         
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+            
+            .controls, .summary, footer, button {
+                display: none !important;
+            }
+            
+            table {
+                page-break-inside: auto;
+            }
+            
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            
+            th {
+                background-color: #2c3e50 !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -216,6 +244,7 @@
         <div class="controls">
             <div>
                 <button id="loadData">Muat Ulang Data</button>
+                <button id="printBtn" onclick="window.print()">Cetak Laporan</button>
             </div>
             <div id="lastUpdate"></div>
         </div>
@@ -268,35 +297,49 @@
         
         // Fungsi untuk membersihkan dan mengonversi nilai uang dari string
         function cleanMoneyValue(value) {
-            if (!value || value.trim() === '' || value === '-') return 0;
+            if (!value || value.toString().trim() === '' || value.toString() === '-') {
+                return 0;
+            }
             
-            // Hilangkan karakter non-angka dan tanda hubung
-            let cleaned = value.toString().replace(/[^\d,.-]/g, '');
+            let strValue = value.toString().trim();
+            
+            // Debug log
+            console.log('Original value:', strValue);
+            
+            // Hapus "Rp" dan spasi
+            strValue = strValue.replace(/^Rp\s*/i, '');
+            
+            // Hapus semua karakter non-angka kecuali koma dan titik
+            strValue = strValue.replace(/[^\d,.]/g, '');
+            
+            console.log('After cleaning:', strValue);
             
             // Jika kosong setelah dibersihkan, return 0
-            if (cleaned === '') return 0;
-            
-            // Periksa jika ada koma sebagai pemisah ribuan (format Indonesia)
-            // Format Indonesia: Rp200,000 (koma sebagai pemisah ribuan, bukan desimal)
-            // Jika ada koma tapi tidak ada titik, maka koma adalah pemisah ribuan
-            if (cleaned.includes(',') && !cleaned.includes('.')) {
-                // Hapus koma karena di Indonesia koma adalah pemisah ribuan
-                cleaned = cleaned.replace(/,/g, '');
+            if (strValue === '') {
+                return 0;
             }
-            // Jika ada koma dan titik, kemungkinan format internasional
-            else if (cleaned.includes(',') && cleaned.includes('.')) {
-                // Format: 1.000,00 -> 1000.00
+            
+            // Cek format Indonesia: 200,000 (koma sebagai pemisah ribuan)
+            // Jika hanya ada koma dan tidak ada titik, atau koma di posisi ke-4 dari belakang
+            if (strValue.includes(',') && !strValue.includes('.')) {
+                // Hapus semua koma
+                strValue = strValue.replace(/,/g, '');
+            }
+            // Format dengan titik dan koma: 1.000,00
+            else if (strValue.includes('.') && strValue.includes(',')) {
                 // Hapus titik sebagai pemisah ribuan, ganti koma dengan titik sebagai desimal
-                cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+                strValue = strValue.replace(/\./g, '').replace(',', '.');
             }
-            // Jika hanya ada koma (format Eropa)
-            else if (cleaned.includes(',')) {
-                // Ganti koma dengan titik sebagai desimal
-                cleaned = cleaned.replace(',', '.');
+            // Format Eropa: 1000,00
+            else if (strValue.includes(',') && !strValue.includes('.')) {
+                // Ganti koma dengan titik
+                strValue = strValue.replace(',', '.');
             }
             
-            // Parse ke float
-            const number = parseFloat(cleaned);
+            console.log('Before parseFloat:', strValue);
+            
+            const number = parseFloat(strValue);
+            console.log('Parsed number:', number);
             
             return isNaN(number) ? 0 : number;
         }
@@ -318,37 +361,49 @@
                 }
                 
                 const csvText = await response.text();
-                console.log("Raw CSV:", csvText.substring(0, 500)); // Log sebagian data untuk debugging
+                console.log("Raw CSV text (first 1000 chars):", csvText.substring(0, 1000));
                 
-                // Parse data CSV dengan benar (handle quotes dan koma dalam sel)
-                const rows = parseCSV(csvText);
+                // Parse CSV dengan cara yang lebih sederhana
+                const rows = parseCSVSimple(csvText);
+                console.log("Parsed rows:", rows);
                 
                 if (rows.length < 2) {
                     throw new Error('Data CSV tidak valid atau kosong');
                 }
                 
                 // Header (baris pertama)
-                const headers = rows[0].map(h => h.trim());
-                console.log("Headers:", headers);
+                const headers = rows[0].map(h => h ? h.trim() : '');
+                console.log("Headers found:", headers);
                 
                 // Data (baris kedua hingga akhir)
-                const dataRows = rows.slice(1).filter(row => row.length > 0 && row[0] && row[0].trim() !== '');
-                console.log("Data rows:", dataRows.length);
+                const dataRows = rows.slice(1).filter(row => {
+                    const firstCell = row[0] ? row[0].trim() : '';
+                    return firstCell !== '' && firstCell !== undefined && firstCell !== null;
+                });
+                
+                console.log("Data rows count:", dataRows.length);
+                console.log("Sample data row:", dataRows[0]);
                 
                 // Cari kolom-kolom setoran (dimulai dengan "setoran")
                 const setoranColumns = headers
-                    .map((header, index) => ({ header, index }))
+                    .map((header, index) => ({ 
+                        header: header || `Kolom ${index + 1}`, 
+                        index 
+                    }))
                     .filter(col => col.header.toLowerCase().includes('setoran'));
                 
-                console.log("Setoran columns:", setoranColumns);
+                console.log("Setoran columns found:", setoranColumns);
                 
                 // Cari kolom nama (biasanya kolom pertama)
                 const namaColumnIndex = headers.findIndex(header => 
-                    header.toLowerCase().includes('nama') || 
-                    header.toLowerCase().includes('name'));
+                    header && (header.toLowerCase().includes('nama') || header.toLowerCase().includes('name')));
                 
                 if (namaColumnIndex === -1) {
-                    throw new Error('Kolom "NAMA" tidak ditemukan dalam data');
+                    console.warn('Kolom "NAMA" tidak ditemukan, menggunakan kolom pertama sebagai nama');
+                    // Jika tidak ada kolom nama, gunakan kolom pertama
+                    var namaIndex = 0;
+                } else {
+                    var namaIndex = namaColumnIndex;
                 }
                 
                 // Buat header tabel
@@ -370,6 +425,7 @@
                     const th = document.createElement('th');
                     th.textContent = col.header.toUpperCase();
                     th.classList.add('amount-header');
+                    th.style.textAlign = 'right';
                     tableHeader.appendChild(th);
                 });
                 
@@ -377,6 +433,7 @@
                 const totalHeader = document.createElement('th');
                 totalHeader.textContent = 'TOTAL';
                 totalHeader.classList.add('amount-header');
+                totalHeader.style.textAlign = 'right';
                 tableHeader.appendChild(totalHeader);
                 
                 // Bersihkan body tabel
@@ -398,8 +455,8 @@
                     
                     // Kolom nama
                     const namaCell = document.createElement('td');
-                    const namaValue = row[namaColumnIndex] || '';
-                    namaCell.textContent = namaValue.trim();
+                    const namaValue = row[namaIndex] ? row[namaIndex].trim() : `Baris ${rowIndex + 1}`;
+                    namaCell.textContent = namaValue;
                     tr.appendChild(namaCell);
                     
                     // Hitung total untuk orang ini
@@ -409,31 +466,33 @@
                     setoranColumns.forEach((col, colIndex) => {
                         const td = document.createElement('td');
                         td.classList.add('amount');
+                        td.style.textAlign = 'right';
                         
-                        const value = row[col.index] || '';
-                        console.log(`Row ${rowIndex}, Col ${col.header}: "${value}"`);
-                        const numericValue = cleanMoneyValue(value);
-                        console.log(`Numeric value: ${numericValue}`);
+                        const value = row[col.index] ? row[col.index].trim() : '';
                         
-                        if (value && value.trim() !== '' && value !== '-') {
+                        if (value && value !== '' && value !== '-') {
+                            const numericValue = cleanMoneyValue(value);
+                            console.log(`Processing: "${value}" -> ${numericValue}`);
+                            
                             td.textContent = formatNumber(numericValue);
+                            
+                            // Tambahkan ke total orang ini
+                            personTotal += numericValue;
+                            
+                            // Tambahkan ke total kolom
+                            columnTotals[colIndex] += numericValue;
                         } else {
                             td.textContent = '-';
                             td.classList.add('empty-value');
                         }
                         
                         tr.appendChild(td);
-                        
-                        // Tambahkan ke total orang ini
-                        personTotal += numericValue;
-                        
-                        // Tambahkan ke total kolom
-                        columnTotals[colIndex] += numericValue;
                     });
                     
                     // Kolom total per orang
                     const totalCell = document.createElement('td');
                     totalCell.classList.add('amount');
+                    totalCell.style.textAlign = 'right';
                     totalCell.textContent = formatNumber(personTotal);
                     if (personTotal === 0) {
                         totalCell.classList.add('empty-value');
@@ -445,36 +504,43 @@
                     
                     // Tambahkan ke total keseluruhan
                     totalAllSetoran += personTotal;
-                    if (namaValue.trim() !== '') {
+                    if (namaValue && namaValue.trim() !== '') {
                         totalAllPeople++;
                     }
                 });
                 
-                // Tambahkan baris total
-                const totalRow = document.createElement('tr');
-                totalRow.classList.add('total-row');
-                
-                // Sel untuk label "TOTAL"
-                const totalLabelCell = document.createElement('td');
-                totalLabelCell.colSpan = 2; // Span No dan Nama
-                totalLabelCell.textContent = `TOTAL (${totalAllPeople} orang)`;
-                totalRow.appendChild(totalLabelCell);
-                
-                // Total untuk setiap kolom setoran
-                columnTotals.forEach(total => {
-                    const td = document.createElement('td');
-                    td.classList.add('amount');
-                    td.textContent = formatNumber(total);
-                    totalRow.appendChild(td);
-                });
-                
-                // Total keseluruhan
-                const grandTotalCell = document.createElement('td');
-                grandTotalCell.classList.add('amount');
-                grandTotalCell.textContent = formatNumber(totalAllSetoran);
-                totalRow.appendChild(grandTotalCell);
-                
-                tableBody.appendChild(totalRow);
+                // Tambahkan baris total jika ada data
+                if (dataRows.length > 0) {
+                    const totalRow = document.createElement('tr');
+                    totalRow.classList.add('total-row');
+                    
+                    // Sel untuk label "TOTAL"
+                    const totalLabelCell = document.createElement('td');
+                    totalLabelCell.colSpan = 2; // Span No dan Nama
+                    totalLabelCell.textContent = `TOTAL (${totalAllPeople} orang)`;
+                    totalLabelCell.style.fontWeight = 'bold';
+                    totalRow.appendChild(totalLabelCell);
+                    
+                    // Total untuk setiap kolom setoran
+                    columnTotals.forEach(total => {
+                        const td = document.createElement('td');
+                        td.classList.add('amount');
+                        td.style.textAlign = 'right';
+                        td.style.fontWeight = 'bold';
+                        td.textContent = formatNumber(total);
+                        totalRow.appendChild(td);
+                    });
+                    
+                    // Total keseluruhan
+                    const grandTotalCell = document.createElement('td');
+                    grandTotalCell.classList.add('amount');
+                    grandTotalCell.style.textAlign = 'right';
+                    grandTotalCell.style.fontWeight = 'bold';
+                    grandTotalCell.textContent = formatNumber(totalAllSetoran);
+                    totalRow.appendChild(grandTotalCell);
+                    
+                    tableBody.appendChild(totalRow);
+                }
                 
                 // Update summary
                 summaryContainer.innerHTML = `
@@ -516,44 +582,41 @@
             }
         }
         
-        // Fungsi untuk parse CSV dengan benar
-        function parseCSV(csvText) {
+        // Fungsi parse CSV yang lebih sederhana
+        function parseCSVSimple(text) {
             const rows = [];
-            let currentRow = [];
-            let currentCell = '';
-            let insideQuotes = false;
+            const lines = text.split('\n');
             
-            for (let i = 0; i < csvText.length; i++) {
-                const char = csvText[i];
-                const nextChar = csvText[i + 1];
+            for (let line of lines) {
+                if (line.trim() === '') continue;
                 
-                if (char === '"') {
-                    if (insideQuotes && nextChar === '"') {
-                        // Escape quote
-                        currentCell += '"';
-                        i++; // Skip next quote
+                // Split by comma, but handle quoted values
+                const row = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    
+                    if (char === '"') {
+                        if (inQuotes && line[i + 1] === '"') {
+                            // Escaped quote
+                            current += '"';
+                            i++;
+                        } else {
+                            inQuotes = !inQuotes;
+                        }
+                    } else if (char === ',' && !inQuotes) {
+                        row.push(current);
+                        current = '';
                     } else {
-                        insideQuotes = !insideQuotes;
+                        current += char;
                     }
-                } else if (char === ',' && !insideQuotes) {
-                    // End of cell
-                    currentRow.push(currentCell);
-                    currentCell = '';
-                } else if (char === '\n' && !insideQuotes) {
-                    // End of row
-                    currentRow.push(currentCell);
-                    rows.push(currentRow);
-                    currentRow = [];
-                    currentCell = '';
-                } else {
-                    currentCell += char;
                 }
-            }
-            
-            // Add last row if any
-            if (currentCell !== '' || currentRow.length > 0) {
-                currentRow.push(currentCell);
-                rows.push(currentRow);
+                
+                // Add the last cell
+                row.push(current);
+                rows.push(row);
             }
             
             return rows;
@@ -565,8 +628,48 @@
         // Muat data pertama kali saat halaman dimuat
         document.addEventListener('DOMContentLoaded', loadData);
         
-        // Auto-refresh setiap 5 menit (opsional)
-        // setInterval(loadData, 5 * 60 * 1000);
+        // Tambahkan style untuk print
+        const printStyle = document.createElement('style');
+        printStyle.textContent = `
+            @media print {
+                @page {
+                    margin: 0.5cm;
+                }
+                
+                body * {
+                    visibility: hidden;
+                }
+                
+                #tableContainer, #tableContainer * {
+                    visibility: visible;
+                }
+                
+                #tableContainer {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                }
+                
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                
+                th {
+                    background-color: #2c3e50 !important;
+                    color: white !important;
+                    -webkit-print-color-adjust: exact;
+                }
+                
+                td, th {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+            }
+        `;
+        document.head.appendChild(printStyle);
+        
     </script>
 </body>
 </html>
