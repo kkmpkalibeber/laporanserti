@@ -240,7 +240,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             font-size: 14px;
         }
@@ -340,6 +340,43 @@
             color: #ddd;
         }
         
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .pagination button {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background-color: #4c956c;
+            color: white;
+            border-color: #4c956c;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination .page-info {
+            font-weight: 500;
+            color: #555;
+        }
+        
         /* Print Styles */
         @media print {
             body * {
@@ -369,6 +406,12 @@
                 border: 1px solid #ddd;
                 font-size: 11px;
                 width: 100%;
+                page-break-inside: auto;
+            }
+            
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
             }
             
             th {
@@ -395,6 +438,7 @@
                 margin-bottom: 20px;
                 border-bottom: 2px solid #333;
                 padding-bottom: 15px;
+                page-break-after: avoid;
             }
             
             .print-summary {
@@ -403,6 +447,7 @@
                 margin-bottom: 15px;
                 border-radius: 4px;
                 font-size: 13px;
+                page-break-after: avoid;
             }
             
             .print-info {
@@ -410,6 +455,7 @@
                 justify-content: space-between;
                 margin-bottom: 15px;
                 font-size: 12px;
+                page-break-after: avoid;
             }
         }
         
@@ -443,6 +489,10 @@
             .btn {
                 width: 100%;
                 justify-content: center;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -539,6 +589,12 @@
                         <p>Silakan login sebagai admin untuk mengimport data, atau data akan muncul di sini setelah diimport.</p>
                     </div>
                 </div>
+                
+                <div class="pagination hidden" id="paginationContainer">
+                    <button id="prevPageBtn" disabled><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                    <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
+                    <button id="nextPageBtn" disabled>Selanjutnya <i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
             
             <!-- Print Section (Hidden) -->
@@ -601,6 +657,19 @@
             }
         ];
         
+        // Tambahkan lebih banyak data contoh untuk testing pagination
+        for (let i = 6; i <= 30; i++) {
+            iuranData.push({
+                nama: `ANGGOTA ${i}, S.Pd`,
+                setoran1: { tanggal: `01/01/2024`, nominal: 150000 + (i * 10000) },
+                setoran2: { tanggal: `01/02/2024`, nominal: 150000 + (i * 10000) },
+                setoran3: { tanggal: `01/03/2024`, nominal: 150000 + (i * 10000) },
+                setoran4: { tanggal: `01/04/2024`, nominal: 150000 + (i * 10000) },
+                setoran5: { tanggal: `01/05/2024`, nominal: 150000 + (i * 10000) },
+                setoran6: { tanggal: `01/06/2024`, nominal: 150000 + (i * 10000) }
+            });
+        }
+        
         // State aplikasi
         let currentUser = null;
         let isAdmin = false;
@@ -608,6 +677,9 @@
             nama: "Semua Anggota",
             kategori: "Semua Setoran"
         };
+        let currentPage = 1;
+        const itemsPerPage = 20;
+        let filteredData = [];
         
         // DOM Elements
         const userAvatar = document.getElementById('userAvatar');
@@ -633,6 +705,10 @@
         const dataTableContainer = document.getElementById('dataTableContainer');
         const emptyState = document.getElementById('emptyState');
         const printSection = document.getElementById('printSection');
+        const paginationContainer = document.getElementById('paginationContainer');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const pageInfo = document.getElementById('pageInfo');
         
         // Format angka dengan pemisah ribuan
         function formatNumber(num) {
@@ -687,15 +763,17 @@
             return filteredData;
         }
         
-        // Tampilkan data dalam tabel
-        function displayData(filterNama = "Semua Anggota", filterKategori = "Semua Setoran") {
+        // Tampilkan data dalam tabel dengan pagination
+        function displayData(filterNama = "Semua Anggota", filterKategori = "Semua Setoran", page = 1) {
             currentFilter.nama = filterNama;
             currentFilter.kategori = filterKategori;
+            currentPage = page;
             
             // Jika tidak ada data, tampilkan empty state
             if (iuranData.length === 0) {
                 emptyState.classList.remove('hidden');
                 resultsSummary.classList.add('hidden');
+                paginationContainer.classList.add('hidden');
                 dataTableContainer.innerHTML = `
                     <div class="empty-state" id="emptyState">
                         <i class="fas fa-database"></i>
@@ -708,7 +786,8 @@
             
             emptyState.classList.add('hidden');
             
-            let filteredData = iuranData;
+            // Filter data
+            filteredData = iuranData;
             
             // Filter berdasarkan nama
             if (filterNama !== "Semua Anggota") {
@@ -728,6 +807,15 @@
             resultsSummary.classList.remove('hidden');
             totalAmount.textContent = `Rp${formatNumber(totalDana)}`;
             
+            // Hitung pagination
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+            const pageData = filteredData.slice(startIndex, endIndex);
+            
+            // Update pagination controls
+            updatePaginationControls(page, totalPages);
+            
             // Buat tabel
             let tableHTML = `
                 <table>
@@ -735,6 +823,11 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+            `;
+            
+            // Tentukan kolom mana yang akan ditampilkan berdasarkan kategori filter
+            if (filterKategori === "Semua Setoran") {
+                tableHTML += `
                             <th>Setoran 1</th>
                             <th>Setoran 2</th>
                             <th>Setoran 3</th>
@@ -745,67 +838,137 @@
                         </tr>
                     </thead>
                     <tbody>
-            `;
-            
-            filteredData.forEach((item, index) => {
-                const total = calculateTotal(item);
-                
-                tableHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.nama}</td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="setoran-cell">
-                                <div class="date-cell">${formatDate(item.setoran6.tanggal)}</div>
-                                <div class="numeric-cell">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
-                    </tr>
                 `;
+            } else {
+                // Jika filter kategori tertentu, hanya tampilkan kolom kategori tersebut
+                tableHTML += `
+                            <th>${filterKategori}</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                `;
+            }
+            
+            pageData.forEach((item, index) => {
+                const total = calculateTotal(item);
+                const actualIndex = startIndex + index + 1;
+                
+                if (filterKategori === "Semua Setoran") {
+                    tableHTML += `
+                        <tr>
+                            <td>${actualIndex}</td>
+                            <td>${item.nama}</td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(item.setoran6.tanggal)}</div>
+                                    <div class="numeric-cell">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
+                        </tr>
+                    `;
+                } else {
+                    // Tampilkan hanya kolom kategori yang difilter
+                    let kategoriData = { tanggal: '', nominal: 0 };
+                    
+                    switch(filterKategori) {
+                        case "Setoran 1": kategoriData = item.setoran1; break;
+                        case "Setoran 2": kategoriData = item.setoran2; break;
+                        case "Setoran 3": kategoriData = item.setoran3; break;
+                        case "Setoran 4": kategoriData = item.setoran4; break;
+                        case "Setoran 5": kategoriData = item.setoran5; break;
+                        case "Setoran 6": kategoriData = item.setoran6; break;
+                    }
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${actualIndex}</td>
+                            <td>${item.nama}</td>
+                            <td>
+                                <div class="setoran-cell">
+                                    <div class="date-cell">${formatDate(kategoriData.tanggal)}</div>
+                                    <div class="numeric-cell">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
+                        </tr>
+                    `;
+                }
             });
             
-            // Baris total
-            tableHTML += `
-                    <tr class="total-row">
-                        <td colspan="8" style="text-align: right;">Total Dana:</td>
-                        <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
-                    </tr>
-                </tbody>
-            </table>
-            `;
+            // Baris total (hanya jika ada data)
+            if (pageData.length > 0) {
+                if (filterKategori === "Semua Setoran") {
+                    tableHTML += `
+                            <tr class="total-row">
+                                <td colspan="8" style="text-align: right;">Total Dana (halaman ini):</td>
+                                <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    `;
+                } else {
+                    tableHTML += `
+                            <tr class="total-row">
+                                <td colspan="3" style="text-align: right;">Total Dana (halaman ini):</td>
+                                <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    `;
+                }
+            } else {
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+            }
             
             dataTableContainer.innerHTML = tableHTML;
+        }
+        
+        // Update pagination controls
+        function updatePaginationControls(currentPage, totalPages) {
+            if (filteredData.length > itemsPerPage) {
+                paginationContainer.classList.remove('hidden');
+                pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages} (${filteredData.length} data)`;
+                
+                prevPageBtn.disabled = currentPage === 1;
+                nextPageBtn.disabled = currentPage === totalPages;
+            } else {
+                paginationContainer.classList.add('hidden');
+            }
         }
         
         // Siapkan konten untuk dicetak
@@ -813,15 +976,11 @@
             const filterNama = currentFilter.nama;
             const filterKategori = currentFilter.kategori;
             
-            let filteredData = iuranData;
-            
-            // Filter berdasarkan nama
-            if (filterNama !== "Semua Anggota") {
-                filteredData = filteredData.filter(item => item.nama === filterNama);
+            // Gunakan filteredData yang sudah ada
+            if (filteredData.length === 0) {
+                alert('Tidak ada data untuk dicetak. Silakan filter data terlebih dahulu.');
+                return false;
             }
-            
-            // Filter berdasarkan kategori
-            filteredData = filterByKategori(filteredData, filterKategori);
             
             // Hitung total dana
             let totalDana = 0;
@@ -832,8 +991,8 @@
             // Buat konten untuk print
             let printHTML = `
                 <div class="print-header">
-                    <h2 style="margin-bottom: 5px;">Data Iuran Sertifikasi SMA Takhassus Al Quran</h2>
-                    <p style="margin-bottom: 10px; color: #666;">Sistem Pengelolaan Data Iuran Anggota</p>
+                    <h2 style="margin-bottom: 5px; font-size: 18px;">Data Iuran Sertifikasi SMA Takhassus Al Quran</h2>
+                    <p style="margin-bottom: 10px; color: #666; font-size: 14px;">Sistem Pengelolaan Data Iuran Anggota</p>
                     <hr style="border: none; border-top: 2px solid #333; margin: 10px 0;">
                 </div>
                 
@@ -847,8 +1006,9 @@
                 </div>
                 
                 <div class="print-summary">
-                    <h3 style="margin: 0 0 10px 0;">Hasil Pencarian</h3>
+                    <h3 style="margin: 0 0 10px 0; font-size: 16px;">Hasil Pencarian</h3>
                     <div style="font-size: 18px; font-weight: bold; color: #2c6e49;">Total: Rp${formatNumber(totalDana)}</div>
+                    <div style="font-size: 13px; margin-top: 5px;">Jumlah Data: ${filteredData.length} anggota</div>
                 </div>
                 
                 <table>
@@ -856,6 +1016,11 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+            `;
+            
+            // Tentukan kolom mana yang akan ditampilkan berdasarkan kategori filter
+            if (filterKategori === "Semua Setoran") {
+                printHTML += `
                             <th>Setoran 1</th>
                             <th>Setoran 2</th>
                             <th>Setoran 3</th>
@@ -866,71 +1031,127 @@
                         </tr>
                     </thead>
                     <tbody>
-            `;
+                `;
+            } else {
+                // Jika filter kategori tertentu, hanya tampilkan kolom kategori tersebut
+                printHTML += `
+                            <th>${filterKategori}</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                `;
+            }
             
-            filteredData.forEach((item, index) => {
+            // Batasi data untuk cetak (semua data, tidak dipaginasi)
+            const printData = filteredData.slice(0, 100); // Maksimal 100 data untuk cetak
+            
+            printData.forEach((item, index) => {
                 const total = calculateTotal(item);
                 
-                printHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.nama}</td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran1.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran2.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran3.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran4.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran5.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column;">
-                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran6.tanggal)}</div>
-                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
-                            </div>
-                        </td>
-                        <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace;">Rp${formatNumber(total)}</td>
-                    </tr>
-                `;
+                if (filterKategori === "Semua Setoran") {
+                    printHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="font-size: 11px;">${item.nama}</td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran1.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran2.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran3.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran4.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran5.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(item.setoran6.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace; font-size: 11px;">Rp${formatNumber(total)}</td>
+                        </tr>
+                    `;
+                } else {
+                    // Tampilkan hanya kolom kategori yang difilter
+                    let kategoriData = { tanggal: '', nominal: 0 };
+                    
+                    switch(filterKategori) {
+                        case "Setoran 1": kategoriData = item.setoran1; break;
+                        case "Setoran 2": kategoriData = item.setoran2; break;
+                        case "Setoran 3": kategoriData = item.setoran3; break;
+                        case "Setoran 4": kategoriData = item.setoran4; break;
+                        case "Setoran 5": kategoriData = item.setoran5; break;
+                        case "Setoran 6": kategoriData = item.setoran6; break;
+                    }
+                    
+                    printHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="font-size: 11px;">${item.nama}</td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="color: #666; font-size: 10px;">${formatDate(kategoriData.tanggal)}</div>
+                                    <div style="text-align: right; font-family: 'Courier New', monospace; font-size: 11px;">${kategoriData.nominal > 0 ? 'Rp' + formatNumber(kategoriData.nominal) : '-'}</div>
+                                </div>
+                            </td>
+                            <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace; font-size: 11px;">Rp${formatNumber(total)}</td>
+                        </tr>
+                    `;
+                }
             });
             
             // Baris total
-            printHTML += `
-                    <tr style="background-color: #f0f0f0; font-weight: bold;">
-                        <td colspan="8" style="text-align: right; padding: 10px;">Total Dana:</td>
-                        <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace;">Rp${formatNumber(totalDana)}</td>
-                    </tr>
-                </tbody>
-            </table>
+            if (filterKategori === "Semua Setoran") {
+                printHTML += `
+                        <tr style="background-color: #f0f0f0; font-weight: bold;">
+                            <td colspan="8" style="text-align: right; padding: 10px; font-size: 12px;">Total Dana:</td>
+                            <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace; font-size: 12px;">Rp${formatNumber(totalDana)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                `;
+            } else {
+                printHTML += `
+                        <tr style="background-color: #f0f0f0; font-weight: bold;">
+                            <td colspan="3" style="text-align: right; padding: 10px; font-size: 12px;">Total Dana:</td>
+                            <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace; font-size: 12px;">Rp${formatNumber(totalDana)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                `;
+            }
             
-            <div class="footer-note">
-                <p><strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
-            </div>
+            printHTML += `
+                <div class="footer-note">
+                    <p><strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
+                    <p style="font-size: 11px; margin-top: 5px;"><strong>Total Data:</strong> ${filteredData.length} anggota</p>
+                </div>
             `;
             
             printSection.innerHTML = printHTML;
+            return true;
         }
         
         // Tampilkan alert
@@ -983,6 +1204,7 @@
             if (newData.length > 0) {
                 iuranData = newData;
                 updateNamaFilter();
+                currentPage = 1;
                 displayData();
                 showAlert(`Berhasil mengimpor ${newData.length} data anggota`, 'success');
                 excelData.value = '';
@@ -1051,17 +1273,20 @@
             dataTableContainer.innerHTML = '';
             resultsSummary.classList.add('hidden');
             emptyState.classList.remove('hidden');
+            paginationContainer.classList.add('hidden');
         });
         
         searchBtn.addEventListener('click', () => {
             const selectedNama = namaFilter.value;
             const selectedKategori = kategoriFilter.value;
-            displayData(selectedNama, selectedKategori);
+            currentPage = 1;
+            displayData(selectedNama, selectedKategori, 1);
         });
         
         resetBtn.addEventListener('click', () => {
             namaFilter.value = 'Semua Anggota';
             kategoriFilter.value = 'Semua Setoran';
+            currentPage = 1;
             displayData();
         });
         
@@ -1071,12 +1296,26 @@
                 return;
             }
             
-            preparePrintContent();
-            
-            // Delay sedikit untuk memastikan konten sudah siap
-            setTimeout(() => {
-                window.print();
-            }, 100);
+            const success = preparePrintContent();
+            if (success) {
+                // Delay sedikit untuk memastikan konten sudah siap
+                setTimeout(() => {
+                    window.print();
+                }, 100);
+            }
+        });
+        
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                displayData(currentFilter.nama, currentFilter.kategori, currentPage - 1);
+            }
+        });
+        
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                displayData(currentFilter.nama, currentFilter.kategori, currentPage + 1);
+            }
         });
         
         importBtn.addEventListener('click', () => {
