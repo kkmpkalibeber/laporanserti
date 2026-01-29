@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Data Iuran Sertifikasi SMA Takhassus Al Quran</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,7 +17,8 @@
             background-color: #f5f9fc;
             color: #333;
             line-height: 1.6;
-            padding: 20px;
+            padding: 10px;
+            -webkit-text-size-adjust: 100%;
         }
         
         .container {
@@ -32,27 +33,43 @@
         header {
             background: linear-gradient(to right, #2c6e49, #4c956c);
             color: white;
-            padding: 25px 30px;
+            padding: 20px 15px;
             text-align: center;
         }
         
         h1 {
-            font-size: 28px;
+            font-size: 22px;
             margin-bottom: 5px;
         }
         
         .subtitle {
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.9;
         }
         
         .login-section {
-            padding: 30px;
+            padding: 20px 15px;
             background-color: #f8f9fa;
             border-bottom: 1px solid #eaeaea;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .login-section {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            header {
+                padding: 25px 30px;
+            }
         }
         
         .user-info {
@@ -71,31 +88,37 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            flex-shrink: 0;
         }
         
         .login-form {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            align-items: center;
+            width: 100%;
         }
         
-        .login-form input {
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
+        @media (min-width: 768px) {
+            .login-form {
+                flex-direction: row;
+                width: auto;
+            }
         }
         
+        .login-form input,
         .login-form select {
-            padding: 10px 15px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 6px;
-            font-size: 15px;
-            background-color: white;
+            font-size: 16px;
+            width: 100%;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
         
         .btn {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -103,7 +126,17 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            font-size: 16px;
+            white-space: nowrap;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .btn {
+                width: auto;
+            }
         }
         
         .btn-primary {
@@ -143,15 +176,28 @@
         }
         
         .content {
-            padding: 30px;
+            padding: 20px 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .content {
+                padding: 30px;
+            }
         }
         
         .admin-section, .search-section {
             background-color: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 1px solid #eaeaea;
+        }
+        
+        @media (min-width: 768px) {
+            .admin-section, .search-section {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
         }
         
         .section-title {
@@ -159,7 +205,7 @@
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 2px solid #4c956c;
-            font-size: 20px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -169,24 +215,27 @@
             background-color: white;
             border: 2px dashed #ccc;
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px 15px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             transition: all 0.3s;
         }
         
-        .import-area:hover {
-            border-color: #4c956c;
-            background-color: #f9fffb;
+        @media (min-width: 768px) {
+            .import-area {
+                padding: 25px;
+                margin-bottom: 20px;
+            }
         }
         
         .import-area p {
             margin-bottom: 15px;
             color: #666;
+            font-size: 15px;
         }
         
         .note {
-            font-size: 14px;
+            font-size: 13px;
             color: #777;
             font-style: italic;
             margin-top: 10px;
@@ -194,9 +243,15 @@
         
         .search-form {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .search-form {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
         }
         
         .form-group {
@@ -208,6 +263,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #555;
+            font-size: 15px;
         }
         
         .results-summary {
@@ -216,25 +272,49 @@
             border-radius: 8px;
             margin-bottom: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .results-summary {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
         
         .results-summary h3 {
             color: #2c6e49;
+            font-size: 18px;
         }
         
         .total-amount {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #2c6e49;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .total-amount {
+                font-size: 22px;
+                text-align: right;
+            }
         }
         
         .action-buttons {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .action-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
         }
         
         table {
@@ -243,6 +323,15 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             font-size: 14px;
+            overflow-x: auto;
+            display: block;
+        }
+        
+        @media (min-width: 768px) {
+            table {
+                display: table;
+                font-size: 14px;
+            }
         }
         
         th {
@@ -251,8 +340,6 @@
             text-align: left;
             padding: 12px 8px;
             font-weight: 600;
-            position: sticky;
-            top: 0;
             white-space: nowrap;
         }
         
@@ -296,24 +383,25 @@
         
         .footer-note {
             background-color: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-top: 30px;
+            margin-top: 20px;
             border-left: 5px solid #4c956c;
-            font-size: 15px;
+            font-size: 14px;
         }
         
         .hidden {
-            display: none;
+            display: none !important;
         }
         
         .alert {
-            padding: 12px 20px;
+            padding: 12px 15px;
             border-radius: 6px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 14px;
         }
         
         .alert-success {
@@ -330,20 +418,25 @@
         
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 40px 15px;
             color: #666;
         }
         
         .empty-state i {
-            font-size: 60px;
+            font-size: 50px;
             margin-bottom: 20px;
             color: #ddd;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
         
         /* Pagination Styles */
         .pagination {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
             margin-top: 20px;
@@ -352,13 +445,26 @@
             border-radius: 8px;
         }
         
+        @media (min-width: 768px) {
+            .pagination {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+        
+        .pagination-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
         .pagination button {
-            padding: 8px 15px;
+            padding: 10px 15px;
             border: 1px solid #ddd;
             background-color: white;
             border-radius: 4px;
             cursor: pointer;
             font-weight: 500;
+            min-width: 120px;
         }
         
         .pagination button:hover:not(:disabled) {
@@ -375,12 +481,16 @@
         .pagination .page-info {
             font-weight: 500;
             color: #555;
+            text-align: center;
+            font-size: 15px;
         }
         
-        /* Print Styles */
+        /* Print Styles - FIXED */
         @media print {
             body * {
                 visibility: hidden;
+                margin: 0;
+                padding: 0;
             }
             
             #printSection, #printSection * {
@@ -392,108 +502,171 @@
                 left: 0;
                 top: 0;
                 width: 100%;
-                padding: 20px;
+                padding: 15px;
                 background-color: white;
                 font-size: 12px;
+                line-height: 1.4;
             }
             
             .no-print {
                 display: none !important;
             }
             
-            table {
+            #printSection table {
                 box-shadow: none;
                 border: 1px solid #ddd;
                 font-size: 11px;
                 width: 100%;
                 page-break-inside: auto;
+                border-collapse: collapse;
             }
             
-            tr {
+            #printSection tr {
                 page-break-inside: avoid;
                 page-break-after: auto;
             }
             
-            th {
+            #printSection th {
                 background-color: #f0f0f0 !important;
                 color: black !important;
                 -webkit-print-color-adjust: exact;
-                padding: 8px 6px;
+                padding: 6px 4px;
+                font-size: 11px;
             }
             
-            td {
-                padding: 8px 6px;
+            #printSection td {
+                padding: 6px 4px;
+                font-size: 11px;
             }
             
-            .footer-note {
+            #printSection .footer-note {
                 border: 1px solid #ddd;
-                margin-top: 20px;
+                margin-top: 15px;
                 page-break-inside: avoid;
-                font-size: 12px;
-                padding: 15px;
-            }
-            
-            .print-header {
-                text-align: center;
-                margin-bottom: 20px;
-                border-bottom: 2px solid #333;
-                padding-bottom: 15px;
-                page-break-after: avoid;
-            }
-            
-            .print-summary {
-                background-color: #f0f0f0;
+                font-size: 11px;
                 padding: 10px;
+            }
+            
+            #printSection .print-header {
+                text-align: center;
                 margin-bottom: 15px;
-                border-radius: 4px;
-                font-size: 13px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 10px;
                 page-break-after: avoid;
             }
             
-            .print-info {
+            #printSection .print-summary {
+                background-color: #f0f0f0;
+                padding: 8px;
+                margin-bottom: 12px;
+                border-radius: 4px;
+                font-size: 12px;
+                page-break-after: avoid;
+            }
+            
+            #printSection .print-info {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 15px;
-                font-size: 12px;
+                margin-bottom: 12px;
+                font-size: 11px;
                 page-break-after: avoid;
+                flex-wrap: wrap;
+            }
+            
+            #printSection h2 {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+            
+            #printSection h3 {
+                font-size: 14px;
+                margin-bottom: 5px;
             }
         }
         
-        @media (max-width: 1200px) {
+        /* Mobile-specific adjustments */
+        @media (max-width: 767px) {
             table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+                font-size: 12px;
             }
             
-            .container {
-                overflow-x: hidden;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .login-section {
-                flex-direction: column;
-                gap: 20px;
-                align-items: stretch;
-            }
-            
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
+            th, td {
+                padding: 8px 5px;
             }
             
             .btn {
-                width: 100%;
-                justify-content: center;
+                padding: 12px 15px;
             }
             
-            .pagination {
-                flex-wrap: wrap;
+            .login-form input,
+            .login-form select {
+                padding: 12px;
             }
+        }
+        
+        /* Print Preview Modal */
+        .print-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .print-modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .print-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .print-modal-body {
+            padding: 20px;
+            overflow: auto;
+        }
+        
+        .print-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 15px 20px;
+            border-top: 1px solid #ddd;
+            background-color: #f8f9fa;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #4c956c;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -536,7 +709,7 @@
                     <p><i class="fas fa-file-import fa-2x" style="color: #4c956c; margin-bottom: 10px;"></i></p>
                     <p><strong>Import Data dari Excel</strong></p>
                     <p>Copy tabel dari Excel (13 kolom A-M) dan paste di bawah ini:</p>
-                    <textarea id="excelData" rows="8" placeholder="Tempel data Excel di sini... Format: Nama, Setoran1_Tanggal, Setoran1_Nominal, Setoran2_Tanggal, Setoran2_Nominal, Setoran3_Tanggal, Setoran3_Nominal, Setoran4_Tanggal, Setoran4_Nominal, Setoran5_Tanggal, Setoran5_Nominal, Setoran6_Tanggal, Setoran6_Nominal"></textarea>
+                    <textarea id="excelData" rows="6" placeholder="Tempel data Excel di sini... Format: Nama, Setoran1_Tanggal, Setoran1_Nominal, Setoran2_Tanggal, Setoran2_Nominal, Setoran3_Tanggal, Setoran3_Nominal, Setoran4_Tanggal, Setoran4_Nominal, Setoran5_Tanggal, Setoran5_Nominal, Setoran6_Tanggal, Setoran6_Nominal"></textarea>
                     <p class="note">Pastikan data yang dipaste memiliki 13 kolom sesuai format: Nama, tanggal setoran 1, nominal setoran 1, tanggal setoran 2, nominal setoran 2, ..., tanggal setoran 6, nominal setoran 6</p>
                     <div class="action-buttons">
                         <button class="btn btn-primary" id="importBtn"><i class="fas fa-upload"></i> Import Data</button>
@@ -570,10 +743,13 @@
                         </select>
                     </div>
                     
-                    <div class="form-group" style="align-self: flex-end;">
-                        <button class="btn btn-primary" id="searchBtn"><i class="fas fa-filter"></i> Tampilkan</button>
-                        <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
-                        <button class="btn btn-print" id="printBtn"><i class="fas fa-print"></i> Cetak PDF</button>
+                    <div class="form-group">
+                        <label style="visibility: hidden;">Aksi</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn btn-primary" id="searchBtn"><i class="fas fa-filter"></i> Tampilkan</button>
+                            <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
+                            <button class="btn btn-print" id="printBtn"><i class="fas fa-print"></i> Cetak PDF</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -591,14 +767,33 @@
                 </div>
                 
                 <div class="pagination hidden" id="paginationContainer">
-                    <button id="prevPageBtn" disabled><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                    <div class="pagination-buttons">
+                        <button id="prevPageBtn" disabled><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                        <button id="nextPageBtn" disabled>Selanjutnya <i class="fas fa-chevron-right"></i></button>
+                    </div>
                     <span class="page-info" id="pageInfo">Halaman 1 dari 1</span>
-                    <button id="nextPageBtn" disabled>Selanjutnya <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
             
             <!-- Print Section (Hidden) -->
             <div id="printSection" class="hidden"></div>
+            
+            <!-- Print Modal -->
+            <div id="printModal" class="print-modal hidden">
+                <div class="print-modal-content">
+                    <div class="print-modal-header">
+                        <h3 style="margin: 0;">Print Preview</h3>
+                        <button id="closePrintModal" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #666;">&times;</button>
+                    </div>
+                    <div class="print-modal-body" id="printModalBody">
+                        <!-- Print preview will be inserted here -->
+                    </div>
+                    <div class="print-modal-actions">
+                        <button class="btn btn-secondary" id="cancelPrintBtn">Batal</button>
+                        <button class="btn btn-primary" id="confirmPrintBtn"><i class="fas fa-print"></i> Cetak Sekarang</button>
+                    </div>
+                </div>
+            </div>
             
             <!-- Footer Note -->
             <div class="footer-note">
@@ -657,19 +852,6 @@
             }
         ];
         
-        // Tambahkan lebih banyak data contoh untuk testing pagination
-        for (let i = 6; i <= 30; i++) {
-            iuranData.push({
-                nama: `ANGGOTA ${i}, S.Pd`,
-                setoran1: { tanggal: `01/01/2024`, nominal: 150000 + (i * 10000) },
-                setoran2: { tanggal: `01/02/2024`, nominal: 150000 + (i * 10000) },
-                setoran3: { tanggal: `01/03/2024`, nominal: 150000 + (i * 10000) },
-                setoran4: { tanggal: `01/04/2024`, nominal: 150000 + (i * 10000) },
-                setoran5: { tanggal: `01/05/2024`, nominal: 150000 + (i * 10000) },
-                setoran6: { tanggal: `01/06/2024`, nominal: 150000 + (i * 10000) }
-            });
-        }
-        
         // State aplikasi
         let currentUser = null;
         let isAdmin = false;
@@ -709,6 +891,11 @@
         const prevPageBtn = document.getElementById('prevPageBtn');
         const nextPageBtn = document.getElementById('nextPageBtn');
         const pageInfo = document.getElementById('pageInfo');
+        const printModal = document.getElementById('printModal');
+        const printModalBody = document.getElementById('printModalBody');
+        const closePrintModal = document.getElementById('closePrintModal');
+        const cancelPrintBtn = document.getElementById('cancelPrintBtn');
+        const confirmPrintBtn = document.getElementById('confirmPrintBtn');
         
         // Format angka dengan pemisah ribuan
         function formatNumber(num) {
@@ -929,11 +1116,17 @@
             
             // Baris total (hanya jika ada data)
             if (pageData.length > 0) {
+                // Hitung total untuk halaman ini
+                let pageTotal = 0;
+                pageData.forEach(item => {
+                    pageTotal += calculateTotal(item);
+                });
+                
                 if (filterKategori === "Semua Setoran") {
                     tableHTML += `
                             <tr class="total-row">
                                 <td colspan="8" style="text-align: right;">Total Dana (halaman ini):</td>
-                                <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
+                                <td class="numeric-cell">Rp${formatNumber(pageTotal)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -942,7 +1135,7 @@
                     tableHTML += `
                             <tr class="total-row">
                                 <td colspan="3" style="text-align: right;">Total Dana (halaman ini):</td>
-                                <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
+                                <td class="numeric-cell">Rp${formatNumber(pageTotal)}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -971,7 +1164,7 @@
             }
         }
         
-        // Siapkan konten untuk dicetak
+        // Siapkan konten untuk dicetak - FIXED VERSION
         function preparePrintContent() {
             const filterNama = currentFilter.nama;
             const filterKategori = currentFilter.kategori;
@@ -1146,12 +1339,29 @@
             printHTML += `
                 <div class="footer-note">
                     <p><strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
-                    <p style="font-size: 11px; margin-top: 5px;"><strong>Total Data:</strong> ${filteredData.length} anggota</p>
+                    <p style="font-size: 11px; margin-top: 5px;"><strong>Total Data:</strong> ${filteredData.length} anggota | <strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID')}</p>
                 </div>
             `;
             
-            printSection.innerHTML = printHTML;
-            return true;
+            return printHTML;
+        }
+        
+        // Tampilkan modal print preview
+        function showPrintPreview() {
+            if (iuranData.length === 0) {
+                alert('Tidak ada data untuk dicetak. Silakan import data terlebih dahulu.');
+                return;
+            }
+            
+            const printHTML = preparePrintContent();
+            if (!printHTML) return;
+            
+            // Tampilkan preview di modal
+            printModalBody.innerHTML = printHTML;
+            printModal.classList.remove('hidden');
+            
+            // Scroll ke atas modal
+            printModalBody.scrollTop = 0;
         }
         
         // Tampilkan alert
@@ -1291,16 +1501,32 @@
         });
         
         printBtn.addEventListener('click', () => {
-            if (iuranData.length === 0) {
-                alert('Tidak ada data untuk dicetak. Silakan import data terlebih dahulu.');
-                return;
-            }
-            
-            const success = preparePrintContent();
-            if (success) {
-                // Delay sedikit untuk memastikan konten sudah siap
+            showPrintPreview();
+        });
+        
+        closePrintModal.addEventListener('click', () => {
+            printModal.classList.add('hidden');
+        });
+        
+        cancelPrintBtn.addEventListener('click', () => {
+            printModal.classList.add('hidden');
+        });
+        
+        confirmPrintBtn.addEventListener('click', () => {
+            // Siapkan konten untuk print sebenarnya
+            const printHTML = preparePrintContent();
+            if (printHTML) {
+                printSection.innerHTML = printHTML;
+                
+                // Tunggu sebentar sebelum memanggil print
                 setTimeout(() => {
                     window.print();
+                    printModal.classList.add('hidden');
+                    
+                    // Reset print section setelah selesai
+                    setTimeout(() => {
+                        printSection.innerHTML = '';
+                    }, 100);
                 }, 100);
             }
         });
@@ -1337,15 +1563,36 @@
             }
         });
         
+        // Handle escape key untuk menutup modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !printModal.classList.contains('hidden')) {
+                printModal.classList.add('hidden');
+            }
+        });
+        
+        // Handle klik di luar modal untuk menutup
+        printModal.addEventListener('click', (e) => {
+            if (e.target === printModal) {
+                printModal.classList.add('hidden');
+            }
+        });
+        
         // Inisialisasi
         updateNamaFilter();
         
         // Contoh format untuk paste data Excel (HANYA di placeholder)
         excelData.placeholder = `Contoh format paste dari Excel (13 kolom A-M):
-Nama[TAB]24/11/2024[TAB]200000[TAB]24/11/2024[TAB]200000[TAB]28/03/2025[TAB]200000[TAB]15/07/2025[TAB]200000[TAB][TAB]0[TAB][TAB]0
-
-Atau format CSV:
-Nama,24/11/2024,200000,24/11/2024,200000,28/03/2025,200000,15/07/2025,200000,,0,,0`;
+Nama[TAB]24/11/2024[TAB]200000[TAB]24/11/2024[TAB]200000[TAB]28/03/2025[TAB]200000[TAB]15/07/2025[TAB]200000[TAB][TAB]0[TAB][TAB]0`;
+        
+        // Tambahkan event listener untuk mencegah zoom pada mobile dengan double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
