@@ -21,7 +21,7 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background-color: #fff;
             border-radius: 12px;
@@ -133,6 +133,15 @@
             background-color: #d65c3e;
         }
         
+        .btn-print {
+            background-color: #1e88e5;
+            color: white;
+        }
+        
+        .btn-print:hover {
+            background-color: #0d6bb5;
+        }
+        
         .content {
             padding: 30px;
         }
@@ -221,26 +230,36 @@
             color: #2c6e49;
         }
         
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
         }
         
         th {
             background-color: #4c956c;
             color: white;
             text-align: left;
-            padding: 15px;
+            padding: 12px 8px;
             font-weight: 600;
             position: sticky;
             top: 0;
+            white-space: nowrap;
         }
         
         td {
-            padding: 15px;
+            padding: 12px 8px;
             border-bottom: 1px solid #eee;
+            vertical-align: top;
         }
         
         tr:hover {
@@ -255,7 +274,14 @@
         
         .date-cell {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        
+        .setoran-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
         
         .total-row {
@@ -302,16 +328,121 @@
             border-left: 5px solid #dc3545;
         }
         
-        @media (max-width: 1024px) {
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background-color: white;
+                font-size: 12px;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            table {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                font-size: 11px;
+                width: 100%;
+            }
+            
+            th {
+                background-color: #f0f0f0 !important;
+                color: black !important;
+                -webkit-print-color-adjust: exact;
+                padding: 8px 6px;
+            }
+            
+            td {
+                padding: 8px 6px;
+            }
+            
+            .footer-note {
+                border: 1px solid #ddd;
+                margin-top: 20px;
+                page-break-inside: avoid;
+                font-size: 12px;
+                padding: 15px;
+            }
+            
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 15px;
+            }
+            
+            .print-summary {
+                background-color: #f0f0f0;
+                padding: 10px;
+                margin-bottom: 15px;
+                border-radius: 4px;
+                font-size: 13px;
+            }
+            
+            .print-info {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .container {
+                overflow-x: hidden;
+            }
+        }
+        
+        @media (max-width: 768px) {
             .login-section {
                 flex-direction: column;
                 gap: 20px;
                 align-items: stretch;
             }
             
-            table {
-                display: block;
-                overflow-x: auto;
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -333,20 +464,20 @@
             </div>
             
             <div class="login-form">
-                <select id="userType">
+                <select id="userType" class="no-print">
                     <option value="">-- Pilih User --</option>
                     <option value="admin">Admin</option>
                     <option value="anggota">Anggota</option>
                 </select>
-                <input type="password" id="password" placeholder="Password">
-                <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
-                <button class="btn btn-secondary hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <input type="password" id="password" placeholder="Password" class="no-print">
+                <button class="btn btn-primary no-print" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button class="btn btn-secondary hidden no-print" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </div>
         
         <div class="content">
             <!-- Admin Section -->
-            <div class="admin-section hidden" id="adminSection">
+            <div class="admin-section hidden no-print" id="adminSection">
                 <h2 class="section-title"><i class="fas fa-user-cog"></i> Panel Admin</h2>
                 
                 <div id="adminAlert" class="alert hidden"></div>
@@ -355,18 +486,20 @@
                     <p><i class="fas fa-file-import fa-2x" style="color: #4c956c; margin-bottom: 10px;"></i></p>
                     <p><strong>Import Data dari Excel</strong></p>
                     <p>Copy tabel dari Excel (13 kolom A-M) dan paste di bawah ini:</p>
-                    <textarea id="excelData" rows="8" placeholder="Tempel data Excel di sini... Kolom: Nama, Setoran 1 (Tanggal, Nominal), Setoran 2 (Tanggal, Nominal), Setoran 3 (Tanggal, Nominal), Setoran 4 (Tanggal, Nominal), Setoran 5 (Tanggal, Nominal)"></textarea>
-                    <p class="note">Pastikan data yang dipaste memiliki 13 kolom sesuai format: Nama, tanggal setoran 1, nominal setoran 1, tanggal setoran 2, nominal setoran 2, ..., tanggal setoran 5, nominal setoran 5</p>
-                    <button class="btn btn-primary" id="importBtn"><i class="fas fa-upload"></i> Import Data</button>
-                    <button class="btn btn-danger" id="clearDataBtn"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+                    <textarea id="excelData" rows="8" placeholder="Tempel data Excel di sini... Format: Nama, Setoran1_Tanggal, Setoran1_Nominal, Setoran2_Tanggal, Setoran2_Nominal, Setoran3_Tanggal, Setoran3_Nominal, Setoran4_Tanggal, Setoran4_Nominal, Setoran5_Tanggal, Setoran5_Nominal, Setoran6_Tanggal, Setoran6_Nominal"></textarea>
+                    <p class="note">Pastikan data yang dipaste memiliki 13 kolom sesuai format: Nama, tanggal setoran 1, nominal setoran 1, tanggal setoran 2, nominal setoran 2, ..., tanggal setoran 6, nominal setoran 6</p>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="importBtn"><i class="fas fa-upload"></i> Import Data</button>
+                        <button class="btn btn-danger" id="clearDataBtn"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+                    </div>
                 </div>
             </div>
             
             <!-- Search Section -->
-            <div class="search-section" id="searchSection">
+            <div class="search-section hidden" id="searchSection">
                 <h2 class="section-title"><i class="fas fa-search"></i> Cari Data Iuran</h2>
                 
-                <div class="search-form">
+                <div class="search-form no-print">
                     <div class="form-group">
                         <label for="namaFilter">Nama Anggota</label>
                         <select id="namaFilter">
@@ -383,12 +516,14 @@
                             <option value="Setoran 3">Setoran 3</option>
                             <option value="Setoran 4">Setoran 4</option>
                             <option value="Setoran 5">Setoran 5</option>
+                            <option value="Setoran 6">Setoran 6</option>
                         </select>
                     </div>
                     
                     <div class="form-group" style="align-self: flex-end;">
                         <button class="btn btn-primary" id="searchBtn"><i class="fas fa-filter"></i> Tampilkan</button>
                         <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
+                        <button class="btn btn-print" id="printBtn"><i class="fas fa-print"></i> Cetak PDF</button>
                     </div>
                 </div>
                 
@@ -397,8 +532,17 @@
                     <div class="total-amount" id="totalAmount">Rp0</div>
                 </div>
                 
-                <div id="dataTableContainer"></div>
+                <div id="dataTableContainer">
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-database"></i>
+                        <h3>Belum ada data</h3>
+                        <p>Silakan login sebagai admin untuk mengimport data, atau data akan muncul di sini setelah diimport.</p>
+                    </div>
+                </div>
             </div>
+            
+            <!-- Print Section (Hidden) -->
+            <div id="printSection" class="hidden"></div>
             
             <!-- Footer Note -->
             <div class="footer-note">
@@ -408,31 +552,34 @@
     </div>
 
     <script>
-        // Data contoh
+        // Data contoh dengan 6 setoran
         let iuranData = [
             {
                 nama: "CHRISTINA, S.Pd",
-                setoran1: { tanggal: "01/12/2024", nominal: 200000 },
-                setoran2: { tanggal: "15/01/2025", nominal: 200000 },
-                setoran3: { tanggal: "01/03/2025", nominal: 200000 },
-                setoran4: { tanggal: "15/04/2025", nominal: 200000 },
-                setoran5: { tanggal: "01/06/2025", nominal: 200000 }
+                setoran1: { tanggal: "24/11/2024", nominal: 200000 },
+                setoran2: { tanggal: "24/11/2024", nominal: 200000 },
+                setoran3: { tanggal: "28/03/2025", nominal: 200000 },
+                setoran4: { tanggal: "15/07/2025", nominal: 200000 },
+                setoran5: { tanggal: "", nominal: 0 },
+                setoran6: { tanggal: "", nominal: 0 }
             },
             {
                 nama: "MUKHAMMAD HAROWI, S.Pd.",
                 setoran1: { tanggal: "07/12/2024", nominal: 160000 },
-                setoran2: { tanggal: "14/01/2025", nominal: 160000 },
-                setoran3: { tanggal: "14/04/2025", nominal: 160000 },
-                setoran4: { tanggal: "", nominal: 0 },
-                setoran5: { tanggal: "", nominal: 0 }
+                setoran2: { tanggal: "", nominal: 0 },
+                setoran3: { tanggal: "14/04/2025", nominal: 120000 },
+                setoran4: { tanggal: "24/07/2025", nominal: 60000 },
+                setoran5: { tanggal: "", nominal: 0 },
+                setoran6: { tanggal: "", nominal: 0 }
             },
             {
                 nama: "SUHARTATIK, S.Pd.",
                 setoran1: { tanggal: "21/11/2024", nominal: 175000 },
-                setoran2: { tanggal: "21/01/2025", nominal: 175000 },
+                setoran2: { tanggal: "21/12/2024", nominal: 175000 },
                 setoran3: { tanggal: "27/04/2025", nominal: 175000 },
-                setoran4: { tanggal: "", nominal: 0 },
-                setoran5: { tanggal: "", nominal: 0 }
+                setoran4: { tanggal: "15/07/2025", nominal: 175000 },
+                setoran5: { tanggal: "10/11/2025", nominal: 175000 },
+                setoran6: { tanggal: "", nominal: 0 }
             },
             {
                 nama: "FATMA AINIE, S.IP.,M.M.",
@@ -440,21 +587,27 @@
                 setoran2: { tanggal: "05/01/2025", nominal: 188000 },
                 setoran3: { tanggal: "24/12/2024", nominal: 188000 },
                 setoran4: { tanggal: "05/04/2025", nominal: 188000 },
-                setoran5: { tanggal: "", nominal: 0 }
+                setoran5: { tanggal: "05/07/2025", nominal: 188000 },
+                setoran6: { tanggal: "05/10/2025", nominal: 188000 }
             },
             {
                 nama: "SITI KHALIMAH, S.Pd.",
                 setoran1: { tanggal: "25/11/2024", nominal: 200000 },
-                setoran2: { tanggal: "25/01/2025", nominal: 200000 },
-                setoran3: { tanggal: "25/11/2024", nominal: 200000 },
-                setoran4: { tanggal: "25/04/2025", nominal: 200000 },
-                setoran5: { tanggal: "25/06/2025", nominal: 200000 }
+                setoran2: { tanggal: "25/12/2024", nominal: 200000 },
+                setoran3: { tanggal: "25/03/2025", nominal: 200000 },
+                setoran4: { tanggal: "25/06/2025", nominal: 200000 },
+                setoran5: { tanggal: "25/09/2025", nominal: 200000 },
+                setoran6: { tanggal: "25/12/2025", nominal: 200000 }
             }
         ];
         
         // State aplikasi
         let currentUser = null;
         let isAdmin = false;
+        let currentFilter = {
+            nama: "Semua Anggota",
+            kategori: "Semua Setoran"
+        };
         
         // DOM Elements
         const userAvatar = document.getElementById('userAvatar');
@@ -470,6 +623,7 @@
         const kategoriFilter = document.getElementById('kategoriFilter');
         const searchBtn = document.getElementById('searchBtn');
         const resetBtn = document.getElementById('resetBtn');
+        const printBtn = document.getElementById('printBtn');
         const excelData = document.getElementById('excelData');
         const importBtn = document.getElementById('importBtn');
         const clearDataBtn = document.getElementById('clearDataBtn');
@@ -477,6 +631,8 @@
         const resultsSummary = document.getElementById('resultsSummary');
         const totalAmount = document.getElementById('totalAmount');
         const dataTableContainer = document.getElementById('dataTableContainer');
+        const emptyState = document.getElementById('emptyState');
+        const printSection = document.getElementById('printSection');
         
         // Format angka dengan pemisah ribuan
         function formatNumber(num) {
@@ -489,10 +645,10 @@
             return dateStr;
         }
         
-        // Hitung total setoran per anggota
+        // Hitung total setoran per anggota (6 setoran)
         function calculateTotal(setoran) {
             return setoran.setoran1.nominal + setoran.setoran2.nominal + setoran.setoran3.nominal + 
-                   setoran.setoran4.nominal + setoran.setoran5.nominal;
+                   setoran.setoran4.nominal + setoran.setoran5.nominal + setoran.setoran6.nominal;
         }
         
         // Update dropdown nama
@@ -506,14 +662,61 @@
             });
         }
         
+        // Filter data berdasarkan kategori
+        function filterByKategori(data, kategori) {
+            if (kategori === "Semua Setoran") return data;
+            
+            // Buat salinan data untuk di-filter
+            let filteredData = JSON.parse(JSON.stringify(data));
+            
+            // Filter: hanya tampilkan data yang memiliki setoran pada kategori yang dipilih
+            filteredData = filteredData.map(item => {
+                let newItem = { ...item };
+                
+                // Reset semua nominal ke 0 untuk kolom yang tidak sesuai filter
+                if (kategori !== "Setoran 1") newItem.setoran1.nominal = 0;
+                if (kategori !== "Setoran 2") newItem.setoran2.nominal = 0;
+                if (kategori !== "Setoran 3") newItem.setoran3.nominal = 0;
+                if (kategori !== "Setoran 4") newItem.setoran4.nominal = 0;
+                if (kategori !== "Setoran 5") newItem.setoran5.nominal = 0;
+                if (kategori !== "Setoran 6") newItem.setoran6.nominal = 0;
+                
+                return newItem;
+            });
+            
+            return filteredData;
+        }
+        
         // Tampilkan data dalam tabel
         function displayData(filterNama = "Semua Anggota", filterKategori = "Semua Setoran") {
+            currentFilter.nama = filterNama;
+            currentFilter.kategori = filterKategori;
+            
+            // Jika tidak ada data, tampilkan empty state
+            if (iuranData.length === 0) {
+                emptyState.classList.remove('hidden');
+                resultsSummary.classList.add('hidden');
+                dataTableContainer.innerHTML = `
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-database"></i>
+                        <h3>Belum ada data</h3>
+                        <p>Silakan login sebagai admin untuk mengimport data, atau data akan muncul di sini setelah diimport.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            
             let filteredData = iuranData;
             
             // Filter berdasarkan nama
             if (filterNama !== "Semua Anggota") {
                 filteredData = filteredData.filter(item => item.nama === filterNama);
             }
+            
+            // Filter berdasarkan kategori
+            filteredData = filterByKategori(filteredData, filterKategori);
             
             // Hitung total dana
             let totalDana = 0;
@@ -537,6 +740,7 @@
                             <th>Setoran 3</th>
                             <th>Setoran 4</th>
                             <th>Setoran 5</th>
+                            <th>Setoran 6</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -551,24 +755,40 @@
                         <td>${index + 1}</td>
                         <td>${item.nama}</td>
                         <td>
-                            <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
-                            <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
-                            <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
-                            <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
-                            <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
-                            <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="setoran-cell">
+                                <div class="date-cell">${formatDate(item.setoran6.tanggal)}</div>
+                                <div class="numeric-cell">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
+                            </div>
                         </td>
                         <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
                     </tr>
@@ -578,7 +798,7 @@
             // Baris total
             tableHTML += `
                     <tr class="total-row">
-                        <td colspan="7" style="text-align: right;">Total Dana:</td>
+                        <td colspan="8" style="text-align: right;">Total Dana:</td>
                         <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
                     </tr>
                 </tbody>
@@ -586,6 +806,131 @@
             `;
             
             dataTableContainer.innerHTML = tableHTML;
+        }
+        
+        // Siapkan konten untuk dicetak
+        function preparePrintContent() {
+            const filterNama = currentFilter.nama;
+            const filterKategori = currentFilter.kategori;
+            
+            let filteredData = iuranData;
+            
+            // Filter berdasarkan nama
+            if (filterNama !== "Semua Anggota") {
+                filteredData = filteredData.filter(item => item.nama === filterNama);
+            }
+            
+            // Filter berdasarkan kategori
+            filteredData = filterByKategori(filteredData, filterKategori);
+            
+            // Hitung total dana
+            let totalDana = 0;
+            filteredData.forEach(item => {
+                totalDana += calculateTotal(item);
+            });
+            
+            // Buat konten untuk print
+            let printHTML = `
+                <div class="print-header">
+                    <h2 style="margin-bottom: 5px;">Data Iuran Sertifikasi SMA Takhassus Al Quran</h2>
+                    <p style="margin-bottom: 10px; color: #666;">Sistem Pengelolaan Data Iuran Anggota</p>
+                    <hr style="border: none; border-top: 2px solid #333; margin: 10px 0;">
+                </div>
+                
+                <div class="print-info">
+                    <div>
+                        <strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
+                    <div>
+                        <strong>Filter:</strong> ${filterNama} | ${filterKategori}
+                    </div>
+                </div>
+                
+                <div class="print-summary">
+                    <h3 style="margin: 0 0 10px 0;">Hasil Pencarian</h3>
+                    <div style="font-size: 18px; font-weight: bold; color: #2c6e49;">Total: Rp${formatNumber(totalDana)}</div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Setoran 1</th>
+                            <th>Setoran 2</th>
+                            <th>Setoran 3</th>
+                            <th>Setoran 4</th>
+                            <th>Setoran 5</th>
+                            <th>Setoran 6</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredData.forEach((item, index) => {
+                const total = calculateTotal(item);
+                
+                printHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.nama}</td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran1.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran2.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran3.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran4.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran5.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                <div style="color: #666; font-size: 11px;">${formatDate(item.setoran6.tanggal)}</div>
+                                <div style="text-align: right; font-family: 'Courier New', monospace;">${item.setoran6.nominal > 0 ? 'Rp' + formatNumber(item.setoran6.nominal) : '-'}</div>
+                            </div>
+                        </td>
+                        <td style="text-align: right; font-weight: bold; color: #2c6e49; font-family: 'Courier New', monospace;">Rp${formatNumber(total)}</td>
+                    </tr>
+                `;
+            });
+            
+            // Baris total
+            printHTML += `
+                    <tr style="background-color: #f0f0f0; font-weight: bold;">
+                        <td colspan="8" style="text-align: right; padding: 10px;">Total Dana:</td>
+                        <td style="text-align: right; padding: 10px; font-family: 'Courier New', monospace;">Rp${formatNumber(totalDana)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="footer-note">
+                <p><strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
+            </div>
+            `;
+            
+            printSection.innerHTML = printHTML;
         }
         
         // Tampilkan alert
@@ -602,7 +947,7 @@
             }, 5000);
         }
         
-        // Proses import data dari Excel
+        // Proses import data dari Excel (13 kolom: A-M)
         function importExcelData(dataText) {
             const rows = dataText.trim().split('\n');
             const newData = [];
@@ -627,7 +972,8 @@
                         setoran2: { tanggal: cols[3]?.trim() || '', nominal: cleanNumber(cols[4]) },
                         setoran3: { tanggal: cols[5]?.trim() || '', nominal: cleanNumber(cols[6]) },
                         setoran4: { tanggal: cols[7]?.trim() || '', nominal: cleanNumber(cols[8]) },
-                        setoran5: { tanggal: cols[9]?.trim() || '', nominal: cleanNumber(cols[10]) }
+                        setoran5: { tanggal: cols[9]?.trim() || '', nominal: cleanNumber(cols[10]) },
+                        setoran6: { tanggal: cols[11]?.trim() || '', nominal: cleanNumber(cols[12]) }
                     };
                     
                     newData.push(newItem);
@@ -704,6 +1050,7 @@
             // Clear data yang ditampilkan
             dataTableContainer.innerHTML = '';
             resultsSummary.classList.add('hidden');
+            emptyState.classList.remove('hidden');
         });
         
         searchBtn.addEventListener('click', () => {
@@ -716,6 +1063,20 @@
             namaFilter.value = 'Semua Anggota';
             kategoriFilter.value = 'Semua Setoran';
             displayData();
+        });
+        
+        printBtn.addEventListener('click', () => {
+            if (iuranData.length === 0) {
+                alert('Tidak ada data untuk dicetak. Silakan import data terlebih dahulu.');
+                return;
+            }
+            
+            preparePrintContent();
+            
+            // Delay sedikit untuk memastikan konten sudah siap
+            setTimeout(() => {
+                window.print();
+            }, 100);
         });
         
         importBtn.addEventListener('click', () => {
@@ -740,12 +1101,12 @@
         // Inisialisasi
         updateNamaFilter();
         
-        // Tambahkan contoh data ke textarea untuk demo
-        excelData.value = `CHRISTINA, S.Pd	01/12/2024	200000	15/01/2025	200000	01/03/2025	200000	15/04/2025	200000	01/06/2025	200000
-MUKHAMMAD HAROWI, S.Pd.	07/12/2024	160000	14/01/2025	160000	14/04/2025	160000			
-SUHARTATIK, S.Pd.	21/11/2024	175000	21/01/2025	175000	27/04/2025	175000			
-FATMA AINIE, S.IP.,M.M.	05/12/2024	188000	05/01/2025	188000	24/12/2024	188000	05/04/2025	188000		
-SITI KHALIMAH, S.Pd.	25/11/2024	200000	25/01/2025	200000	25/11/2024	200000	25/04/2025	200000	25/06/2025	200000`;
+        // Contoh format untuk paste data Excel (HANYA di placeholder)
+        excelData.placeholder = `Contoh format paste dari Excel (13 kolom A-M):
+Nama[TAB]24/11/2024[TAB]200000[TAB]24/11/2024[TAB]200000[TAB]28/03/2025[TAB]200000[TAB]15/07/2025[TAB]200000[TAB][TAB]0[TAB][TAB]0
+
+Atau format CSV:
+Nama,24/11/2024,200000,24/11/2024,200000,28/03/2025,200000,15/07/2025,200000,,0,,0`;
     </script>
 </body>
 </html>
