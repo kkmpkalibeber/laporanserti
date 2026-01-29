@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Iuran Sertifikasi SMA Takhassus Al Quran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c6e49, #4c956c);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .login-section {
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4c956c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .login-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .login-form input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        
+        .login-form select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: white;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #4c956c;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2c6e49;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        
+        .btn-danger {
+            background-color: #e76f51;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d65c3e;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .admin-section, .search-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .section-title {
+            color: #2c6e49;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4c956c;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .import-area {
+            background-color: white;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .import-area:hover {
+            border-color: #4c956c;
+            background-color: #f9fffb;
+        }
+        
+        .import-area p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .note {
+            font-size: 14px;
+            color: #777;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .results-summary {
+            background-color: #e9f5ef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .results-summary h3 {
+            color: #2c6e49;
+        }
+        
+        .total-amount {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c6e49;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        th {
+            background-color: #4c956c;
+            color: white;
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .numeric-cell {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        
+        .date-cell {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .total-row {
+            background-color: #f0f7f3;
+            font-weight: bold;
+        }
+        
+        .total-row td {
+            border-top: 2px solid #4c956c;
+            border-bottom: none;
+        }
+        
+        .footer-note {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 5px solid #4c956c;
+            font-size: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        @media (max-width: 1024px) {
+            .login-section {
+                flex-direction: column;
+                gap: 20px;
+                align-items: stretch;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-quran"></i> Data Iuran Sertifikasi SMA Takhassus Al Quran</h1>
+            <p class="subtitle">Sistem Pengelolaan Data Iuran Anggota</p>
+        </header>
+        
+        <div class="login-section">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">?</div>
+                <div>
+                    <div id="userStatus">Silakan login untuk mengakses data</div>
+                    <div id="userRole" class="subtitle"></div>
+                </div>
+            </div>
+            
+            <div class="login-form">
+                <select id="userType">
+                    <option value="">-- Pilih User --</option>
+                    <option value="admin">Admin</option>
+                    <option value="anggota">Anggota</option>
+                </select>
+                <input type="password" id="password" placeholder="Password">
+                <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <button class="btn btn-secondary hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Admin Section -->
+            <div class="admin-section hidden" id="adminSection">
+                <h2 class="section-title"><i class="fas fa-user-cog"></i> Panel Admin</h2>
+                
+                <div id="adminAlert" class="alert hidden"></div>
+                
+                <div class="import-area">
+                    <p><i class="fas fa-file-import fa-2x" style="color: #4c956c; margin-bottom: 10px;"></i></p>
+                    <p><strong>Import Data dari Excel</strong></p>
+                    <p>Copy tabel dari Excel (13 kolom A-M) dan paste di bawah ini:</p>
+                    <textarea id="excelData" rows="8" placeholder="Tempel data Excel di sini... Kolom: Nama, Setoran 1 (Tanggal, Nominal), Setoran 2 (Tanggal, Nominal), Setoran 3 (Tanggal, Nominal), Setoran 4 (Tanggal, Nominal), Setoran 5 (Tanggal, Nominal)"></textarea>
+                    <p class="note">Pastikan data yang dipaste memiliki 13 kolom sesuai format: Nama, tanggal setoran 1, nominal setoran 1, tanggal setoran 2, nominal setoran 2, ..., tanggal setoran 5, nominal setoran 5</p>
+                    <button class="btn btn-primary" id="importBtn"><i class="fas fa-upload"></i> Import Data</button>
+                    <button class="btn btn-danger" id="clearDataBtn"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+                </div>
+            </div>
+            
+            <!-- Search Section -->
+            <div class="search-section" id="searchSection">
+                <h2 class="section-title"><i class="fas fa-search"></i> Cari Data Iuran</h2>
+                
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="namaFilter">Nama Anggota</label>
+                        <select id="namaFilter">
+                            <option value="Semua Anggota">Semua Anggota</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="kategoriFilter">Kategori Setoran</label>
+                        <select id="kategoriFilter">
+                            <option value="Semua Setoran">Semua Setoran</option>
+                            <option value="Setoran 1">Setoran 1</option>
+                            <option value="Setoran 2">Setoran 2</option>
+                            <option value="Setoran 3">Setoran 3</option>
+                            <option value="Setoran 4">Setoran 4</option>
+                            <option value="Setoran 5">Setoran 5</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="align-self: flex-end;">
+                        <button class="btn btn-primary" id="searchBtn"><i class="fas fa-filter"></i> Tampilkan</button>
+                        <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+                
+                <div class="results-summary hidden" id="resultsSummary">
+                    <h3>Hasil Pencarian</h3>
+                    <div class="total-amount" id="totalAmount">Rp0</div>
+                </div>
+                
+                <div id="dataTableContainer"></div>
+            </div>
+            
+            <!-- Footer Note -->
+            <div class="footer-note">
+                <p><i class="fas fa-info-circle"></i> <strong>Catatan:</strong> Setoran dimulai dari TW 3 Tahun 2024 s/d TW 4 Tahun 2025</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data contoh
+        let iuranData = [
+            {
+                nama: "CHRISTINA, S.Pd",
+                setoran1: { tanggal: "01/12/2024", nominal: 200000 },
+                setoran2: { tanggal: "15/01/2025", nominal: 200000 },
+                setoran3: { tanggal: "01/03/2025", nominal: 200000 },
+                setoran4: { tanggal: "15/04/2025", nominal: 200000 },
+                setoran5: { tanggal: "01/06/2025", nominal: 200000 }
+            },
+            {
+                nama: "MUKHAMMAD HAROWI, S.Pd.",
+                setoran1: { tanggal: "07/12/2024", nominal: 160000 },
+                setoran2: { tanggal: "14/01/2025", nominal: 160000 },
+                setoran3: { tanggal: "14/04/2025", nominal: 160000 },
+                setoran4: { tanggal: "", nominal: 0 },
+                setoran5: { tanggal: "", nominal: 0 }
+            },
+            {
+                nama: "SUHARTATIK, S.Pd.",
+                setoran1: { tanggal: "21/11/2024", nominal: 175000 },
+                setoran2: { tanggal: "21/01/2025", nominal: 175000 },
+                setoran3: { tanggal: "27/04/2025", nominal: 175000 },
+                setoran4: { tanggal: "", nominal: 0 },
+                setoran5: { tanggal: "", nominal: 0 }
+            },
+            {
+                nama: "FATMA AINIE, S.IP.,M.M.",
+                setoran1: { tanggal: "05/12/2024", nominal: 188000 },
+                setoran2: { tanggal: "05/01/2025", nominal: 188000 },
+                setoran3: { tanggal: "24/12/2024", nominal: 188000 },
+                setoran4: { tanggal: "05/04/2025", nominal: 188000 },
+                setoran5: { tanggal: "", nominal: 0 }
+            },
+            {
+                nama: "SITI KHALIMAH, S.Pd.",
+                setoran1: { tanggal: "25/11/2024", nominal: 200000 },
+                setoran2: { tanggal: "25/01/2025", nominal: 200000 },
+                setoran3: { tanggal: "25/11/2024", nominal: 200000 },
+                setoran4: { tanggal: "25/04/2025", nominal: 200000 },
+                setoran5: { tanggal: "25/06/2025", nominal: 200000 }
+            }
+        ];
+        
+        // State aplikasi
+        let currentUser = null;
+        let isAdmin = false;
+        
+        // DOM Elements
+        const userAvatar = document.getElementById('userAvatar');
+        const userStatus = document.getElementById('userStatus');
+        const userRole = document.getElementById('userRole');
+        const userType = document.getElementById('userType');
+        const password = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminSection = document.getElementById('adminSection');
+        const searchSection = document.getElementById('searchSection');
+        const namaFilter = document.getElementById('namaFilter');
+        const kategoriFilter = document.getElementById('kategoriFilter');
+        const searchBtn = document.getElementById('searchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const excelData = document.getElementById('excelData');
+        const importBtn = document.getElementById('importBtn');
+        const clearDataBtn = document.getElementById('clearDataBtn');
+        const adminAlert = document.getElementById('adminAlert');
+        const resultsSummary = document.getElementById('resultsSummary');
+        const totalAmount = document.getElementById('totalAmount');
+        const dataTableContainer = document.getElementById('dataTableContainer');
+        
+        // Format angka dengan pemisah ribuan
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        // Format tanggal untuk tampilan
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr.trim() === '') return '-';
+            return dateStr;
+        }
+        
+        // Hitung total setoran per anggota
+        function calculateTotal(setoran) {
+            return setoran.setoran1.nominal + setoran.setoran2.nominal + setoran.setoran3.nominal + 
+                   setoran.setoran4.nominal + setoran.setoran5.nominal;
+        }
+        
+        // Update dropdown nama
+        function updateNamaFilter() {
+            namaFilter.innerHTML = '<option value="Semua Anggota">Semua Anggota</option>';
+            iuranData.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.nama;
+                option.textContent = item.nama;
+                namaFilter.appendChild(option);
+            });
+        }
+        
+        // Tampilkan data dalam tabel
+        function displayData(filterNama = "Semua Anggota", filterKategori = "Semua Setoran") {
+            let filteredData = iuranData;
+            
+            // Filter berdasarkan nama
+            if (filterNama !== "Semua Anggota") {
+                filteredData = filteredData.filter(item => item.nama === filterNama);
+            }
+            
+            // Hitung total dana
+            let totalDana = 0;
+            filteredData.forEach(item => {
+                totalDana += calculateTotal(item);
+            });
+            
+            // Tampilkan summary
+            resultsSummary.classList.remove('hidden');
+            totalAmount.textContent = `Rp${formatNumber(totalDana)}`;
+            
+            // Buat tabel
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Setoran 1</th>
+                            <th>Setoran 2</th>
+                            <th>Setoran 3</th>
+                            <th>Setoran 4</th>
+                            <th>Setoran 5</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredData.forEach((item, index) => {
+                const total = calculateTotal(item);
+                
+                tableHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.nama}</td>
+                        <td>
+                            <div class="date-cell">${formatDate(item.setoran1.tanggal)}</div>
+                            <div class="numeric-cell">${item.setoran1.nominal > 0 ? 'Rp' + formatNumber(item.setoran1.nominal) : '-'}</div>
+                        </td>
+                        <td>
+                            <div class="date-cell">${formatDate(item.setoran2.tanggal)}</div>
+                            <div class="numeric-cell">${item.setoran2.nominal > 0 ? 'Rp' + formatNumber(item.setoran2.nominal) : '-'}</div>
+                        </td>
+                        <td>
+                            <div class="date-cell">${formatDate(item.setoran3.tanggal)}</div>
+                            <div class="numeric-cell">${item.setoran3.nominal > 0 ? 'Rp' + formatNumber(item.setoran3.nominal) : '-'}</div>
+                        </td>
+                        <td>
+                            <div class="date-cell">${formatDate(item.setoran4.tanggal)}</div>
+                            <div class="numeric-cell">${item.setoran4.nominal > 0 ? 'Rp' + formatNumber(item.setoran4.nominal) : '-'}</div>
+                        </td>
+                        <td>
+                            <div class="date-cell">${formatDate(item.setoran5.tanggal)}</div>
+                            <div class="numeric-cell">${item.setoran5.nominal > 0 ? 'Rp' + formatNumber(item.setoran5.nominal) : '-'}</div>
+                        </td>
+                        <td class="numeric-cell" style="font-weight: bold; color: #2c6e49;">Rp${formatNumber(total)}</td>
+                    </tr>
+                `;
+            });
+            
+            // Baris total
+            tableHTML += `
+                    <tr class="total-row">
+                        <td colspan="7" style="text-align: right;">Total Dana:</td>
+                        <td class="numeric-cell">Rp${formatNumber(totalDana)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            `;
+            
+            dataTableContainer.innerHTML = tableHTML;
+        }
+        
+        // Tampilkan alert
+        function showAlert(message, type = 'success') {
+            adminAlert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            adminAlert.className = `alert alert-${type}`;
+            adminAlert.classList.remove('hidden');
+            
+            setTimeout(() => {
+                adminAlert.classList.add('hidden');
+            }, 5000);
+        }
+        
+        // Proses import data dari Excel
+        function importExcelData(dataText) {
+            const rows = dataText.trim().split('\n');
+            const newData = [];
+            
+            rows.forEach(row => {
+                // Pisahkan kolom berdasarkan tab (default Excel) atau koma
+                const cols = row.includes('\t') ? row.split('\t') : row.split(',');
+                
+                if (cols.length >= 13) {
+                    const nama = cols[0].trim();
+                    
+                    // Pastikan nominal adalah angka (hilangkan karakter non-digit)
+                    const cleanNumber = (str) => {
+                        if (!str) return 0;
+                        const numStr = str.toString().replace(/[^\d]/g, '');
+                        return numStr ? parseInt(numStr) : 0;
+                    };
+                    
+                    const newItem = {
+                        nama: nama,
+                        setoran1: { tanggal: cols[1]?.trim() || '', nominal: cleanNumber(cols[2]) },
+                        setoran2: { tanggal: cols[3]?.trim() || '', nominal: cleanNumber(cols[4]) },
+                        setoran3: { tanggal: cols[5]?.trim() || '', nominal: cleanNumber(cols[6]) },
+                        setoran4: { tanggal: cols[7]?.trim() || '', nominal: cleanNumber(cols[8]) },
+                        setoran5: { tanggal: cols[9]?.trim() || '', nominal: cleanNumber(cols[10]) }
+                    };
+                    
+                    newData.push(newItem);
+                }
+            });
+            
+            if (newData.length > 0) {
+                iuranData = newData;
+                updateNamaFilter();
+                displayData();
+                showAlert(`Berhasil mengimpor ${newData.length} data anggota`, 'success');
+                excelData.value = '';
+            } else {
+                showAlert('Gagal mengimpor data. Pastikan format data sesuai dengan petunjuk.', 'error');
+            }
+        }
+        
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            const selectedUser = userType.value;
+            const enteredPassword = password.value;
+            
+            if (!selectedUser) {
+                alert('Pilih jenis user terlebih dahulu!');
+                return;
+            }
+            
+            if (selectedUser === 'admin' && enteredPassword === 'f4150l') {
+                currentUser = 'admin';
+                isAdmin = true;
+            } else if (selectedUser === 'anggota' && enteredPassword === 'sejahtera') {
+                currentUser = 'anggota';
+                isAdmin = false;
+            } else {
+                alert('Password salah!');
+                return;
+            }
+            
+            // Update UI setelah login
+            userAvatar.textContent = selectedUser === 'admin' ? 'A' : 'U';
+            userAvatar.style.backgroundColor = selectedUser === 'admin' ? '#2c6e49' : '#4c956c';
+            userStatus.textContent = `Login sebagai: ${selectedUser === 'admin' ? 'Administrator' : 'Anggota'}`;
+            userRole.textContent = selectedUser === 'admin' ? 'Hak akses penuh' : 'Hanya dapat melihat data';
+            
+            // Tampilkan elemen yang sesuai
+            adminSection.classList.toggle('hidden', !isAdmin);
+            searchSection.classList.remove('hidden');
+            loginBtn.classList.add('hidden');
+            logoutBtn.classList.remove('hidden');
+            password.value = '';
+            
+            // Update data tampilan
+            updateNamaFilter();
+            displayData();
+        });
+        
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            isAdmin = false;
+            
+            // Reset UI
+            userAvatar.textContent = '?';
+            userAvatar.style.backgroundColor = '#4c956c';
+            userStatus.textContent = 'Silakan login untuk mengakses data';
+            userRole.textContent = '';
+            
+            // Sembunyikan elemen
+            adminSection.classList.add('hidden');
+            searchSection.classList.add('hidden');
+            loginBtn.classList.remove('hidden');
+            logoutBtn.classList.add('hidden');
+            userType.value = '';
+            
+            // Clear data yang ditampilkan
+            dataTableContainer.innerHTML = '';
+            resultsSummary.classList.add('hidden');
+        });
+        
+        searchBtn.addEventListener('click', () => {
+            const selectedNama = namaFilter.value;
+            const selectedKategori = kategoriFilter.value;
+            displayData(selectedNama, selectedKategori);
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            namaFilter.value = 'Semua Anggota';
+            kategoriFilter.value = 'Semua Setoran';
+            displayData();
+        });
+        
+        importBtn.addEventListener('click', () => {
+            const dataText = excelData.value.trim();
+            if (!dataText) {
+                showAlert('Masukkan data Excel terlebih dahulu!', 'error');
+                return;
+            }
+            
+            importExcelData(dataText);
+        });
+        
+        clearDataBtn.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.')) {
+                iuranData = [];
+                updateNamaFilter();
+                displayData();
+                showAlert('Semua data telah dihapus', 'success');
+            }
+        });
+        
+        // Inisialisasi
+        updateNamaFilter();
+        
+        // Tambahkan contoh data ke textarea untuk demo
+        excelData.value = `CHRISTINA, S.Pd	01/12/2024	200000	15/01/2025	200000	01/03/2025	200000	15/04/2025	200000	01/06/2025	200000
+MUKHAMMAD HAROWI, S.Pd.	07/12/2024	160000	14/01/2025	160000	14/04/2025	160000			
+SUHARTATIK, S.Pd.	21/11/2024	175000	21/01/2025	175000	27/04/2025	175000			
+FATMA AINIE, S.IP.,M.M.	05/12/2024	188000	05/01/2025	188000	24/12/2024	188000	05/04/2025	188000		
+SITI KHALIMAH, S.Pd.	25/11/2024	200000	25/01/2025	200000	25/11/2024	200000	25/04/2025	200000	25/06/2025	200000`;
+    </script>
+</body>
+</html>
